@@ -313,69 +313,70 @@ function dayBlocks(d){
   return {B, over:[], P, tp:"Weekend Rest & Family Day"};
  }
 
- // MONDAY TO THURSDAY: FULL ACADEMY SCHEDULE (9:00 AM - 9:30 PM)
- // ════ BLOCK 1: MORNING SITTING (9:00 AM - 12:30 PM) ════
- // Period 1: 9:00 AM - Morning Adhkar & Attendance
- add(540, 565, "ad", "📿", "Period 1 · Morning Adhkar & Dua", "Morning dhikr, Ayat al-Kursi, 3 Quls (+50 Barakah Stars attendance)", {pk:"adm", ad:3, period:1});
+ // MONDAY TO THURSDAY: MASTER ACADEMY TIMETABLE (6:30 AM Usthadha Recitation -> 9:00 AM Academy Start -> 9:30 PM Report)
+ // ════ BLOCK 1: MORNING SITTING (9:00 AM - 12:40 PM) ════
+ // Period 1: 9:00 - 9:15 AM · Morning Adhkar & Academy Attendance Check-in
+ add(540, 555, "ad", "📿", "Period 1 · Morning Adhkar & Attendance", "Morning dhikr, Ayat al-Kursi, 3 Quls (+50 Barakah Stars attendance)", {pk:"adm", ad:3, period:1});
 
- // Period 2: 9:25 - 10:05 AM - Ummi's Garden (Back Hifz)
- const bh = S.back || {juz:13, page:261, portion:"half1"};
- const bhN = backCount();
- add(565, 605, "ummi", "🌿", "Period 2 · Ummi's Garden (Back Hifz)", "Learn new portion & recite to Ummi for approval seal · Juz " + (bh.juz||13) + ", Page " + (bh.page||261) + " (" + (bh.portion||"half") + ") · " + bhN + "/40 reps", {pk:"bh_session", period:2});
+ // Period 2: 9:15 - 10:00 AM · Today's New Page 20 Reps ("The Morning Lock")
+ add(555, 600, "a", "🔒", "Period 2 · Today's New Page 20 Reps ('The Lock')", "20 Reps of today's page approved by Usthadha at 6:30 AM: Lap 1 (10 reps) + Lap 2 (10 reps sealed!)", {pk:"ladder_today20", period:2});
 
- // Period 3: 10:05 - 10:45 AM - Ladder Rolling Reps (Previous Days)
- add(605, 645, "a", "🪜", "Period 3 · Ladder Rolling Reps (Previous Days)", "10 Reps: Yesterday's page (Day 2) + 10 Reps: Day-before-yesterday (Day 3 sealed 🔒)", {pk:"ladder_prev", period:3});
+ // Period 3: 10:00 - 10:35 AM · Ladder Rolling Reps (Previous Days)
+ add(600, 635, "a", "🪜", "Period 3 · Ladder Rolling Reps (Previous Days)", "10 Reps: Yesterday's page (Day 2) + 10 Reps: Day-before-yesterday (Day 3 sealed 🔒)", {pk:"ladder_prev", period:3});
 
- // Period 4: 10:45 - 11:25 AM - Daily Juz Revision
+ // Period 4: 10:35 - 11:15 AM · Tiered Juz Revision (Easy / Medium / Hard)
  const rvList = rev(d);
  if(rvList.length){
   rvList.forEach(v => {
    const tgtWeeks = v.l == 'easy' ? '1 week' : v.l == 'medium' ? '2 weeks' : '3 weeks';
-   add(645, 685, "rv", "🧠", "Period 4 · Revision · Juz " + v.j + " " + (LI[v.l]||'') + " " + (LN[v.l]||''), "Read " + v.n + " pages, " + v.r + " times each (" + v.l + " cycle · Target: " + tgtWeeks + " per Juz)", {rj:v.j, pk:"rv"+v.j, rv:v, period:4});
+   add(635, 675, "rv", "📊", "Period 4 · Tiered Revision · Juz " + v.j + " " + (LI[v.l]||'') + " (" + v.l + ")", "Daily target: " + v.n + " pages, " + v.r + " reps each (" + v.l + " cycle · Target: " + tgtWeeks + " per Juz)", {rj:v.j, pk:"rv"+v.j, rv:v, period:4});
   });
  } else {
-  add(645, 685, "rv", "🧠", "Period 4 · Juz Revision", "Review past memorised pages smoothly", {pk:"rv_gen", period:4});
+  add(635, 675, "rv", "📊", "Period 4 · Tiered Juz Revision", "Review past memorised pages according to 🟢 Easy / 🟡 Medium / 🔴 Hard classification", {pk:"rv_gen", period:4});
  }
 
- // Mid-Morning Refresh Break: 11:25 - 11:40 AM
- add(685, 700, "bk", "🍎", "Mid-Morning Refresh Break 🔔", "Healthy snack, water, stretch", {pk:"bk1", isBreak:true});
+ // Period 5: 11:15 - 11:45 AM · Ummi's Garden (Back Hifz)
+ const bh = S.back || {juz:13, page:261, portion:"half1"};
+ const bhN = backCount();
+ add(675, 705, "ummi", "🌿", "Period 5 · Ummi's Garden (Back Hifz)", "Learn reverse portion & recite to Ummi for approval seal · Juz " + (bh.juz||13) + ", Page " + (bh.page||261) + " (" + (bh.portion||"half") + ") · " + bhN + "/40 reps", {pk:"bh_session", period:5});
 
- // Period 5: 11:40 AM - 12:30 PM - School Classroom (1 Subject / Day)
+ // Snack & Stretch Break: 11:45 AM - 12:00 PM
+ add(705, 720, "bk", "🍌", "Morning Refresh & Snack Break 🔔", "Healthy snack, juice, water, stretch before school class", {pk:"bk1", isBreak:true});
+
+ // Period 6: 12:00 - 12:40 PM · School Classroom (1 Subject / Day)
  const SUB_DAYS = ['', 'maths', 'science', 'english', 'islamic'];
  const todaySub = SUB_DAYS[w] || 'maths';
  const subLabel = todaySub === 'maths' ? '📐 Mathematics' : todaySub === 'science' ? '🔬 Science' : todaySub === 'english' ? '📖 English' : '🕌 Islamic & Arabic';
- add(700, 750, "sc", "🏫", "Period 5 · School: " + subLabel, "1 Subject per day: Video lesson, notebook writing notes, quick quiz", {pk:"school_today", sub:todaySub, period:5});
+ add(720, 760, "sc", "🏫", "Period 6 · School: " + subLabel, "1 Subject per day: Video lesson, notebook writing notes, quick quiz", {pk:"school_today", sub:todaySub, period:6});
 
- // Noon Transition & Dhuhr Prayer: 12:30 - 1:30 PM
- add(750, 770, "fr", "🚿", "Wudu & Dhuhr Prep", "Wudu and prepare for prayer");
- add(770, 790, "pr", "🕌", "Dhuhr Prayer", "Pray with jamaat in the masjid");
- add(790, 810, "fr", "🍽", "Lunch & Midday Rest", "Healthy lunch & refresh for afternoon class");
+ // Noon Transition & Dhuhr Prayer: 12:40 - 1:30 PM
+ add(760, 780, "fr", "🚿", "Wudu & Dhuhr Prep", "Wudu and prepare for prayer");
+ add(780, 800, "pr", "🕌", "Dhuhr Prayer", "Pray with jamaat in the masjid");
+ add(800, 810, "fr", "🍽", "Lunch & Midday Rest", "Healthy lunch & refresh for afternoon class");
 
  // ════ BLOCK 2: NOON TEACHER CLASS (1:30 - 3:00 PM) ════
- // Period 6: 1:30 - 3:00 PM - Live Mahirul Quran Class with Usthadh
- add(810, 900, "fx", "📖", "Period 6 · Live Mahirul Quran Class with Usthadh", "Recite today's new page to Sheikh/Teacher for correction & approval pass! ✅", {period:6});
+ // Period 7: 1:30 - 3:00 PM · Live Mahirul Quran Class with Usthadh
+ add(810, 900, "fx", "🏛️", "Period 7 · Live Mahirul Quran Class with Usthadh", "Afternoon class with Usthadh: Recitation, correction & tajweed mastery! ✅", {period:7});
 
  // ════ BLOCK 3: AFTERNOON BREAK (3:00 - 6:30 PM = 100% FREE!) ════
- add(900, 1110, "pl", "⚽", "Free Time & Sports (No Academy Tasks) 🌳", "Football, cycling, outdoor play, rest with sister & family. Free afternoon!");
+ add(900, 1110, "pl", "⚽", "Free Time & Sports (No Academy Tasks) 🌳", "Football, cycling, outdoor play, rest with family. Free afternoon!");
 
  // ════ BLOCK 4: EVENING & NIGHT SITTING (6:30 - 9:30 PM) ════
- // Period 7: 6:30 - 7:30 PM - Maghrib & 7 Protective Surahs
- add(1110, 1170, "w", "📖", "Period 7 · Maghrib & 7 Protective Surahs", "Luqman, As-Sajdah, Ya-Sin, Al-Fath, Ad-Dukhan, Al-Waqi'ah, Al-Mulk", {pk:"surah7", isSurah7:true, period:7});
+ // Period 8: 6:30 - 7:30 PM · Maghrib & 7 Protective Surahs
+ add(1110, 1170, "w", "🌅", "Period 8 · Maghrib & 7 Protective Surahs", "Luqman, As-Sajdah, Ya-Sin, Al-Fath, Ad-Dukhan, Al-Waqi'ah, Al-Mulk", {pk:"surah7", isSurah7:true, period:8});
 
- // Period 8: 7:30 - 8:15 PM - Today's New Page 20 Reps (The Big Lock)
- add(1170, 1215, "a", "🪜", "Period 8 · Today's New Page 20 Reps (The Big Lock)", "20 Reps of today's teacher-approved page: Lap 1 (10 reps) + Lap 2 (10 reps sealed!)", {pk:"ladder_today20", period:8});
+ // Dinner & Isha Break: 7:30 - 8:15 PM
+ add(1170, 1215, "fr", "🍽", "Dinner & Isha Prayer Break", "Family dinner and Isha prayer in peace");
 
- // Dinner & Isha Break: 8:15 - 8:45 PM
- add(1215, 1245, "fr", "🍽", "Dinner & Isha Prayer Break", "Healthy dinner and Isha prayer in peace");
-
- // Period 9: 8:45 - 9:30 PM - Night Prep: Tomorrow's New Page
- add(1245, 1290, "pv", "🌙", "Period 9 · Night Prep: Tomorrow's New Page", "Listen to audio 3 times + read 10 slow reps. Sleep ready for tomorrow's teacher class!", {pk:"pv2", period:9});
+ // Period 9: 8:15 - 9:15 PM · Night Mastery: Learning Tomorrow's New Page
+ add(1215, 1275, "pv", "🌙", "Period 9 · Night Prep: Tomorrow's New Page", "Listen to Sheikh Mishary audio 3-5 times + 10 slow reps. Sleep ready for 6:30 AM Usthadha recitation!", {pk:"pv2", period:9});
 
  // Night Report Gate: 9:30 PM
- add(1290, 1320, "ad", "🌙", "Daily Night Report Sent & Bedtime", "Night summary auto-sent to parent Telegram. Sleep with Bismillah early!", {pk:"adn", ad:5});
+ add(1290, 1320, "ad", "📲", "Daily Night Report Sent & Bedtime", "Night summary auto-sent to parent Telegram. Sleep with Bismillah early!", {pk:"adn", ad:5});
 
  return {B, over:[], P, tp:"Full Academy Day"};
 }
+
 function blkDone(d,b){return b.ws?(S.wd[d]||[]).includes(b.ws):!!S.pd[d+'|'+b.pk]}
 const waitCard=()=>{const w=(S.fj||[]).filter(j=>!S.done[j+"E"]);if(!w.length)return"";const j=w[0],e=S.ex[j],n=e?Math.round((pd(e)-pd(today()))/864e5):null,em=n!=null&&n>=0&&n<=7;
  return`<div class="cd" style="border:2px solid #f1b81c;background:#fff9e0"><h2>🏆 Juz ${j} Completed! · 40 Rounds &amp; Exam Prep</h2>
@@ -396,6 +397,70 @@ const waitCard=()=>{const w=(S.fj||[]).filter(j=>!S.done[j+"E"]);if(!w.length)re
  </div>`};
 $('app').addEventListener('change',e=>{const i=e.target.id,w=(S.fj||[]).filter(j=>!S.done[j+'E'])[0];if(!w)return;if(i=='exd'){e.target.value?S.ex[w]=e.target.value:delete S.ex[w];rr()}else if(i=='exr'){S.fr=S.fr||{};S.fr[w]=Math.max(0,Math.min(40,+e.target.value||0));rr()}});
 $('app').addEventListener('click',e=>{const x=e.target.closest('[data-exdone]');if(x){S.done[x.dataset.exdone+'E']=today();rr()}});
+
+/* ==================== ACADEMY LIVE CLOCK & EARLY ADVANCE ==================== */
+function advanceNextPeriod() {
+  const d = today();
+  const nm = nowMin();
+  const { B } = dayBlocks(d);
+  const cur = B.find(b => nm >= b.s && nm < b.e);
+  if (cur && (cur.pk || cur.ws)) {
+    // Mark current block done
+    S.done = S.done || {};
+    S.done[(cur.pk || cur.ws) + '_' + d] = 1;
+    save();
+    playSchoolBell('chime');
+    toast('🎉 Period Completed Early! Bell Rang 🔔 · Moving to Next Period!');
+    render();
+  } else {
+    playSchoolBell('chime');
+    toast('🔔 School Bell Rang! Moving forward.');
+    render();
+  }
+}
+
+function startAcademyClockTicker() {
+  if (window.__academyClockTimer) clearInterval(window.__academyClockTimer);
+  window.__academyClockTimer = setInterval(function() {
+    const el = document.getElementById('academyLiveTime');
+    const cdEl = document.getElementById('academyPeriodCountdown');
+    if (!el && !cdEl) return;
+    
+    // Abu Dhabi Time
+    const now = new Date();
+    const timeStr = now.toLocaleTimeString('en-US', { timeZone: 'Asia/Dubai', hour12: true, hour: '2-digit', minute: '2-digit', second: '2-digit' });
+    if (el) el.innerText = timeStr;
+
+    if (cdEl && window.__currentPeriodEndMin) {
+      const parts = timeStr.split(' ');
+      const hms = parts[0].split(':');
+      let h = parseInt(hms[0], 10);
+      const m = parseInt(hms[1], 10);
+      const s = parseInt(hms[2], 10);
+      const isPM = parts[1] === 'PM';
+      if (isPM && h !== 12) h += 12;
+      if (!isPM && h === 12) h = 0;
+      const totalSec = h * 3600 + m * 60 + s;
+      const endSec = window.__currentPeriodEndMin * 60;
+      const diffSec = endSec - totalSec;
+      
+      if (diffSec > 0) {
+        const minsLeft = Math.floor(diffSec / 60);
+        const secsLeft = diffSec % 60;
+        cdEl.innerText = '⏱️ ' + String(minsLeft).padStart(2, '0') + ':' + String(secsLeft).padStart(2, '0') + ' remaining';
+        if (diffSec <= 180) {
+          cdEl.style.color = '#ef4444'; // Red/amber warning when under 3 mins!
+        } else {
+          cdEl.style.color = '#ffd700';
+        }
+      } else {
+        cdEl.innerText = '🔔 Period Complete!';
+        cdEl.style.color = '#22c55e';
+      }
+    }
+  }, 1000);
+}
+
 function vDay(){
  if(typeof QD=='undefined'||!QD)return '<div class="cd">Loading…</div>';
  const d=VD,t0=today(),isT=d==t0,nm=nowMin(),{B,over,P}=dayBlocks(d),tick=B.filter(b=>b.pk||b.ws),dn=tick.filter(b=>blkDone(d,b)).length;
@@ -405,7 +470,43 @@ function vDay(){
  const targetDays=S.juz9TargetDays||15;
 
  let h='';
- h+=`<div style="display:flex;justify-content:space-between;align-items:center;background:linear-gradient(135deg,#0d2818,#12372e);color:#ffd700;padding:8px 14px;border-radius:12px;margin-bottom:12px;font-size:.82rem;font-weight:700;border:1px solid rgba(255,215,0,0.35);box-shadow:0 4px 12px rgba(0,0,0,0.1)"><span>🕌 MIDLAJ ACADEMY v3</span><span style="color:#a7f3d0;font-weight:600;font-size:.75rem">📅 Mon 26 Oct 2026 · Ready</span></div>`;
+ if (typeof window !== 'undefined') {
+   window.__currentPeriodEndMin = cur ? cur.e : null;
+   setTimeout(startAcademyClockTicker, 50);
+ }
+ h+=`<div style="display:flex;justify-content:space-between;align-items:center;background:linear-gradient(135deg,#0d2818,#12372e);color:#ffd700;padding:8px 14px;border-radius:12px;margin-bottom:12px;font-size:.82rem;font-weight:700;border:1px solid rgba(255,215,0,0.35);box-shadow:0 4px 12px rgba(0,0,0,0.1)"><span>🕌 MIDLAJ ACADEMY v3.5</span><span style="color:#a7f3d0;font-weight:600;font-size:.75rem">📅 Launch: Mon 26 Oct · UAE</span></div>`;
+
+ h+=`<div class="cd" style="background:linear-gradient(135deg,#0d1b2a,#1b263b);border:1.5px solid #415a77;color:#fff;border-radius:18px;padding:16px;margin-bottom:14px;box-shadow:0 8px 24px rgba(0,0,0,0.18)">
+  <div style="display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid rgba(255,255,255,0.12);padding-bottom:10px;margin-bottom:12px">
+    <div>
+      <small style="color:#778da9;font-weight:700;letter-spacing:.08em;font-size:.7rem;text-transform:uppercase">🏫 ACADEMY LIVE CLOCK (ABU DHABI)</small>
+      <div id="academyLiveTime" style="font-family:'Courier New',Courier,monospace;font-size:1.6rem;font-weight:900;color:#ffd700;letter-spacing:1px;line-height:1.2;margin-top:2px">${new Date().toLocaleTimeString('en-US', { timeZone: 'Asia/Dubai', hour12: true, hour: '2-digit', minute: '2-digit', second: '2-digit' })}</div>
+    </div>
+    <div style="text-align:right">
+      <button class="mini" onclick="playSchoolBell('chime')" style="background:rgba(2,132,199,0.3);border:1.5px solid #38bdf8;color:#7dd3fc;border-radius:10px;padding:6px 12px;font-weight:700;font-size:.78rem;cursor:pointer">🔔 Ring Bell</button>
+    </div>
+  </div>
+
+  ${cur ? `
+    <div style="background:rgba(255,255,255,0.06);border-radius:14px;padding:12px;border-left:4px solid #ffd700">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <span style="font-size:.75rem;font-weight:800;color:#ffd700;background:rgba(255,215,0,0.15);padding:2px 8px;border-radius:6px;border:1px solid rgba(255,215,0,0.3)">ACTIVE NOW · PERIOD ${cur.period || 'LIVE'}</span>
+        <span id="academyPeriodCountdown" style="font-family:monospace;font-weight:800;font-size:.88rem;color:#ffd700">⏱️ Calculating...</span>
+      </div>
+      <h3 style="color:#fff;margin:8px 0 4px;font-size:1.1rem">${cur.ic || '⏰'} ${cur.ti}</h3>
+      <small style="color:#cbd5e1;font-size:.82rem;display:block;margin-bottom:10px">${cur.su || ''}</small>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button onclick="advanceNextPeriod()" style="flex:1;background:linear-gradient(135deg,#16a34a,#15803d);color:#fff;border:0;border-radius:10px;padding:10px;font-weight:800;font-size:.85rem;cursor:pointer;box-shadow:0 4px 12px rgba(22,163,74,0.35)">
+          ⚡ Finished Early · Advance to Next Period ›
+        </button>
+      </div>
+    </div>
+  ` : `
+    <div style="background:rgba(255,255,255,0.06);border-radius:12px;padding:10px;text-align:center">
+      <span style="color:#94a3b8;font-size:.85rem">No active period right now · Academy is at rest</span>
+    </div>
+  `}
+</div>`;
 
  // ==================== 1. TOP ACTION BUTTONS ====================
  h+=`<div class="row sp" style="margin-bottom:12px;gap:8px">
@@ -738,7 +839,12 @@ function scFlow() {
       '<div class="cd" style="border-radius:18px;">' +
         '<h2>' + l[0] + '</h2>' +
         '<div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:14px;margin:14px 0;background:#0f172a;">' +
-          '<iframe style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" src="' + vidUrl + '" title="Video Lesson" allowfullscreen></iframe>' +
+          '<iframe style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" src="' + vidUrl + '" title="Video Lesson" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>' +
+        '</div>' +
+        '<div style="text-align:center;margin:6px 0 16px;">' +
+          '<a href="' + vidUrl.replace('/embed/', '/watch?v=').replace('youtube-nocookie.com', 'youtube.com') + '" target="_blank" rel="noopener" style="display:inline-block;background:#ff0000;color:#fff;padding:10px 18px;border-radius:12px;font-weight:800;font-size:.85rem;text-decoration:none;box-shadow:0 4px 14px rgba(255,0,0,0.35)">' +
+            '▶️ Open Lesson in YouTube App' +
+          '</a>' +
         '</div>' +
         '<div style="font-size:1.1rem;line-height:1.7;margin-top:12px;">' + l[1] + '</div>' +
         '<div style="background:#fffbe6;color:#78350f;padding:16px;border-radius:14px;border-left:5px solid #f59e0b;margin-top:16px;">' +
@@ -956,7 +1062,7 @@ initQuranData();
 async function boot(){initQuranData();try{SEG=await jf('data/seg.json')}catch(e){}render()}
 const WIRD=[36,32,56,55,67,10,24,12];
 const sn=s=>QD.s[s-1],ayt=(s,a)=>QD.a[sn(s)[4]+a-1][0],nm=s=>s+'. '+sn(s)[1],wds=k=>{const x=k.split(':');return ayt(+x[0],+x[1]).split(' ')};
-const AU=s=>`https://audio-cdn.tarteel.ai/quran/surah/yasserAlDosari/murattal/mp3/${String(s).padStart(3,'0')}.mp3`;
+const AU = s => 'https://download.quranicaudio.com/qdc/mishari_al_afasy/murattal/' + s + '.mp3';
 const au=$('au');
 function plUI(){const e=$('pl');if(!P){e.style.display='none';return}e.style.display='flex';e.innerHTML=`<div style="flex:1;font-size:.82rem"><b>${sn(P.s)[1]}</b> · ayah ${P.cur}<br>ayah rep ${P.e+1}/${P.each} · pass ${P.r+1}/${P.rng||'∞'}</div><button data-pp>${au.paused?'▶':'⏸'}</button><button data-ps>⏹</button>`}
 function mark(){document.querySelectorAll('.ay.cur').forEach(x=>x.classList.remove('cur'));if(!P)return;const e=document.getElementById('ay'+P.s+'_'+P.cur);if(e){e.classList.add('cur');if(V=='quran')e.scrollIntoView({block:'center',behavior:'smooth'})}}
@@ -990,10 +1096,39 @@ function vPgv(){const m=Math.min(604,Math.max(1,S.mp||1)),[x,y]=PGI[m];S.mp=m;
  return `<div class="cd xr"><div class="row sp"><button class="s nv" data-mp="-1">‹</button><div style="text-align:center"><b>Madani page ${m} / 604</b><br><small class="mu">Juz ${QD.a[x][2]} · ${sn(GA[x][0])[1]} ${GA[x][1]}–${y>x&&GA[y][0]==GA[x][0]?GA[y][1]:sn(GA[y][0])[1]+' '+GA[y][1]}</small></div><button class="s" data-mp="1" style="padding:6px 12px;font-size:1.2rem">›</button></div><div class="row" style="margin-top:10px"><input id="mpn" type="number" min="1" max="604" value="${m}" style="width:90px"><button class="s" data-pmp>▶ Play page</button><button class="mini" data-hide>${HIDE?'Show text':'Hide text'}</button></div>${ctl()}</div><div class="cd"><div class="${HIDE?'blur':''}">${ayList(x,y)}</div></div>`}
 let LG=0,RM=0;
 let CT=0;
-function vTj(){const pp=Math.min(685,Math.max(1,S.pp||10));S.pp=pp;const m=pp-9,ok=m>=1&&m<=604,n=String(pp).padStart(3,'0'),x=ok?PGI[m][0]:0,nx=String(Math.min(685,pp+1)).padStart(3,'0');
- const lab=ok?`Page ${m} · Juz ${QD.a[x][2]} · ${sn(GA[x][0])[1]} ${GA[x][1]}`:(pp<10?'Front pages ('+pp+')':'Back pages ('+pp+')');
- const jmp=`<select id="tjs" style="max-width:130px"><option value="">Jump to…</option><option value="1">Cover & intro</option><option value="5">Colour guide</option><optgroup label="Juz">${[...Array(30)].map((_,i)=>`<option value="${QD.a[JR[i+1][0]][1]+9}">Juz ${i+1}</option>`).join('')}</optgroup><optgroup label="Surah">${QD.s.map((x,i)=>`<option value="${QD.a[x[4]][1]+9}">${i+1}. ${x[1]}</option>`).join('')}</optgroup></select>`;
- return `<div class="cd xr"><div class="row sp"><button class="s nv" data-tp="-1">‹</button><div style="text-align:center;flex:1"><b style="font-size:.9rem">${lab}</b></div><button class="s nv" data-tp="1">›</button></div><div class="row" style="margin-top:8px"><input id="tpn" type="number" min="1" max="604" value="${ok?m:''}" placeholder="Page" style="width:78px">${jmp}${ok?'<button class="icn" data-pmp title="Play page">▶</button>':''}<button class="icn" data-ct title="Repeat settings">⚙</button></div>${CT?ctl():''}</div><img class="tjimg" id="tji" src="pages/${n}.webp" alt="Page ${pp}" onerror="if(!this.dataset.fb){this.dataset.fb=1;const mp=Math.max(1,Math.min(604,${m||1}));this.src='https://files.quran.app/hafs/madani/width_1260/page'+String(mp).padStart(3,'0')+'.png';}else{this.outerHTML='<div class=&quot;cd&quot; style=&quot;text-align:center;padding:20px&quot;>Mushaf page offline. Please connect to internet to view.</div>';}"><img src="pages/${nx}.webp" style="display:none" alt="">`}
+function vTj(){
+  const pp = Math.min(604, Math.max(1, (S.pp > 9 ? S.pp - 9 : S.pp) || 1));
+  const m = pp;
+  S.pp = m + 9;
+  const ok = m >= 1 && m <= 604;
+  const n = String(m).padStart(3, "0");
+  const x = ok && typeof PGI !== "undefined" && PGI[m] ? PGI[m][0] : 0;
+  const lab = ok ? ("Page " + m + " · Juz " + QD.a[x][2] + " · " + sn(GA[x][0])[1] + " " + GA[x][1]) : ("Page " + m);
+  const jmp = '<select id="tjs" style="max-width:130px"><option value="">Jump to…</option><optgroup label="Juz">' +
+    [...Array(30)].map((_,i) => '<option value="' + (QD.a[JR[i+1][0]][1]+9) + '">Juz ' + (i+1) + '</option>').join('') +
+    '</optgroup><optgroup label="Surah">' +
+    QD.s.map((x,i) => '<option value="' + (QD.a[x[4]][1]+9) + '">' + (i+1) + '. ' + x[1] + '</option>').join('') +
+    '</optgroup></select>';
+  
+  return '<div class="cd xr">' +
+    '<div class="row sp">' +
+      '<button class="s nv" data-tp="-1">‹ Prev</button>' +
+      '<div style="text-align:center;flex:1"><b style="font-size:.9rem">' + lab + '</b></div>' +
+      '<button class="s nv" data-tp="1">Next ›</button>' +
+    '</div>' +
+    '<div class="row" style="margin-top:8px">' +
+      '<input id="tpn" type="number" min="1" max="604" value="' + m + '" placeholder="Page" style="width:78px">' +
+      jmp +
+      '<button class="icn" data-pmp title="Play page">▶</button>' +
+      '<button class="icn" data-ct title="Repeat settings">⚙</button>' +
+    '</div>' +
+    (CT ? ctl() : '') +
+  '</div>' +
+  '<div style="text-align:center;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 4px 14px rgba(0,0,0,0.1);margin-bottom:12px">' +
+    '<img class="tjimg" id="tji" src="https://files.quran.app/hafs/madani/width_1260/page' + n + '.png" alt="King Fahd Madani Mushaf Page ' + m + '" style="width:100%;display:block;max-width:620px;margin:0 auto">' +
+  '</div>';
+}
+
 function applyRM(){const b=document.body;b.classList.toggle('rm',!!RM);['sep','drk','wht'].forEach(c=>b.classList.remove(c));if(RM)b.classList.add(['wht','sep','drk'][S.rd.th||0]);document.documentElement.style.setProperty('--fs',(S.rd.fs||1.7)+'rem');
  const e=$('rbar');e.innerHTML=RM?`<button data-rx>✕</button><span style="flex:1"></span>${QT=='tj'?`<button data-tp="-1">‹</button><b style="font-size:.85rem">${S.pp-9>=1&&S.pp-9<=604?'p.'+(S.pp-9):S.pp}</b><button data-tp="1">›</button>`:''}${QT=='tj'?'':'<button data-fs="-1">A−</button><button data-fs="1">A+</button>'}<button data-th>◐</button>`:''}
 $('rbar').addEventListener('click',e=>{const g=t=>e.target.closest(t);let x;
@@ -1027,7 +1162,7 @@ function vRead(){const q=S.q,n=sn(q.s)[3];q.from=Math.min(Math.max(1,q.from),n);
  let h=`<div class="cd xr"><select id="qs" style="width:100%;margin-bottom:10px">${[...Array(114)].map((_,i)=>`<option value="${i+1}" ${i+1==q.s?'selected':''}>${i+1}. ${QD.s[i][1]} · ${QD.s[i][0]} (${QD.s[i][3]})</option>`).join('')}</select>
  <div class="ctl"><div><label>From ayah</label><input id="qf" type="number" min="1" max="${n}" value="${q.from}"></div><div><label>To ayah</label><input id="qt" type="number" min="1" max="${n}" value="${q.to}"></div><div><label>Repeat each ayah</label><select id="qe">${opt([1,2,3,5,7,10,20,40],q.each,x=>x+'×')}</select></div><div><label>Repeat whole range</label><select id="qr">${opt([1,2,3,5,10,20,0],q.rng,x=>x?x+'×':'Endless')}</select></div><div><label>Speed</label><select id="qsp">${opt([.75,.9,1,1.15,1.3],q.spd,x=>x+'×')}</select></div><div style="align-self:end"><button class="mini" data-all>Whole surah</button></div></div>
  <div class="row" style="margin-top:10px"><button class="big" data-pl style="padding:14px;font-size:1.05rem">▶ Play range ${q.from}–${q.to}</button></div><small class="mu">Recitation: Yasser Al-Dosari, streamed online. Tap Play on any ayah, or use From / To to build a range.</small></div>`;
- for(let a=1;a<=n;a++){const k=q.s+':'+a,mc=(MV&&MV[k]||[]).length;h+=`<div class="ay ${a>=q.from&&a<=q.to?'in':''}" id="ay${q.s}_${a}"><div class="ar">${ayt(q.s,a)}<span class="no">${a}</span></div><div class="row"><button class="mini" data-pa="${a}">▶ Play</button><button class="mini" data-sf="${a}">From</button><button class="mini" data-st="${a}">To</button><button class="mini" data-tf="${a}">Tafsir</button>${mc?`<button class="mini" data-mt="${a}">Mutashabih ${mc}</button>`:''}</div><div id="d${a}"></div></div>`}
+ for(let a=1;a<=n;a++){const k=q.s+':'+a,mc=(MV&&MV[k]||[]).length;h+=`<div class="ay ${a>=q.from&&a<=q.to?'in':''}" id="ay${q.s}_${a}"><div class="ar">${ayt(q.s,a)}<span class="no">${a}</span></div><div class="row"><button class="mini" data-pa="${a}">▶ Play</button><button class="mini" data-sf="${a}">From</button><button class="mini" data-st="${a}">To</button>${mc?`<button class="mini" data-mt="${a}">Mutashabih ${mc}</button>`:''}</div><div id="d${a}"></div></div>`}
  return h}
 function vWird(){const t0=today(),dn=S.wd[t0]||[];return `<div class="cd"><b>Daily Surah</b><br><small class="mu">Your regular surahs. Tick when you've recited today. (Surah al-Sajdah and al-Mulk: the Prophet ﷺ used to recite them before sleeping.)</small></div>`+WIRD.map(s=>{const f=dn.includes(s),mo=Object.keys(S.wd).filter(d=>d.slice(0,7)==t0.slice(0,7)&&S.wd[d].includes(s)).length;return `<div class="t ${f?'dn':''}" style="cursor:default"><div class="ck" data-wt="${s}" style="cursor:pointer">${f?'✓':''}</div><div style="flex:1" class="tt"><b>${sn(s)[1]}</b> <span class="ar" style="font-size:1.2rem;line-height:1.5">${sn(s)[0]}</span><br><small>${sn(s)[3]} ayahs · ${mo}× this month</small></div><div><button class="mini" data-wr="${s}">Read</button><button class="mini" data-wp="${s}">▶ Play</button>${(S.dl||[]).includes(s)?'<br><small class="mu">offline ✓</small>':`<button class="mini" data-dl="${s}">⬇ Offline</button>`}</div></div>`}).join('')}
 const PC=m=>{let n=0;while(m){n+=m&1;m>>>=1}return n};
@@ -1642,47 +1777,104 @@ function vTrophy() {
   const stars = S.stars || 150;
   const streakDays = streak();
   const jDone = jdone();
-  const isMotm = (S.attendance && S.attendance[d] && S.attendance[d].status === 'present_ontime');
+  const isMotm = !!(S.attendance && S.attendance[d] && S.attendance[d].status === 'present_ontime');
+  const hasBallonDor = streakDays >= 7 || jDone >= 1;
+  const hasUcl = jDone >= 1;
+  const totalReps = (S.stats && S.stats.totalReps) || 280;
+  const hasGoldenBoot = totalReps >= 500;
 
-  return `<div class="cd hero" style="background:linear-gradient(145deg,#071530,#0b1f4a,#1b4fbf);border:3px solid #f1b81c;border-radius:20px;padding:18px;text-align:center">
-    <span style="font-size:2.8rem">🏆</span>
-    <h1 style="color:#fff;margin:6px 0;font-family:'Russo One',sans-serif">MIDLAJ TROPHY ROOM</h1>
-    <span class="tag" style="background:#f1b81c;color:#0b1f4a;font-weight:800;font-size:.85rem">⭐ ${stars} Barakah Stars Earned</span>
-    <p style="color:#dbe6ff;font-size:.85rem;margin:8px 0 0">Work hard in Hifz, school, and good manners to unlock world-class football honors!</p>
-  </div>
-
-  <h2>🏅 Football Honors &amp; Awards</h2>
-  <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px">
-    <div class="cd" style="border:2px solid ${isMotm ? '#f1b81c' : '#ccc'};background:${isMotm ? '#fffdf3' : '#f9f9f9'};text-align:center;padding:12px;opacity:${isMotm ? 1 : 0.65}">
-      <span style="font-size:2.4rem">🎖️</span>
-      <b style="display:block;font-size:1rem;color:#0b1f4a;margin-top:4px">Man of the Match</b>
-      <small class="mu" style="font-size:.75rem">On-time 9:30 AM &amp; full timetable done</small>
-      <div style="margin-top:6px"><span class="tag" style="background:${isMotm ? '#25D366' : '#888'};color:#fff">${isMotm ? 'WON TODAY! ⭐' : 'LOCKED'}</span></div>
+  let h = `<div class="cd hero" style="background:linear-gradient(145deg,#071530,#0b1f4a,#1b4fbf);border:3px solid #f1b81c;border-radius:22px;padding:22px 16px;text-align:center;box-shadow:0 12px 32px rgba(11,31,74,0.4)">
+    <span style="font-size:3rem">🏆</span>
+    <h1 style="color:#fff;margin:6px 0;font-family:'Russo One',sans-serif;letter-spacing:.05em">MIDLAJ GRAND TROPHY CABINET</h1>
+    <div style="display:inline-block;background:linear-gradient(135deg,#ffd700,#f59e0b);color:#0b1f4a;font-weight:900;font-size:.9rem;padding:6px 16px;border-radius:99px;margin-top:6px;box-shadow:0 4px 12px rgba(245,158,11,0.4)">
+      ⭐ ${stars} Barakah Stars Earned
     </div>
+    <p style="color:#dbe6ff;font-size:.85rem;margin:10px 0 0">Dedicated to Mohammed Midlaj: Master your Hifz, pass exams, and fill your trophy room!</p>
+  </div>`;
 
-    <div class="cd" style="border:2px solid ${streakDays >= 7 ? '#f1b81c' : '#ccc'};background:${streakDays >= 7 ? '#fffdf3' : '#f9f9f9'};text-align:center;padding:12px;opacity:${streakDays >= 7 ? 1 : 0.65}">
-      <span style="font-size:2.4rem">⚽</span>
-      <b style="display:block;font-size:1rem;color:#0b1f4a;margin-top:4px">Ballon d'Or</b>
-      <small class="mu" style="font-size:.75rem">7-day continuous learning streak</small>
-      <div style="margin-top:6px"><span class="tag" style="background:${streakDays >= 7 ? '#f1b81c' : '#888'};color:${streakDays >= 7 ? '#0b1f4a' : '#fff'}">${streakDays >= 7 ? 'AWARDED! 🌟' : streakDays + '/7 Days'}</span></div>
+  // 3D Glass Trophy Cabinet
+  h += `<h2>🏛️ 3D Football Trophy Showcase</h2>
+  <div style="background:linear-gradient(180deg,#1e293b,#0f172a);border:2px solid #334155;border-radius:20px;padding:16px;margin-bottom:18px;box-shadow:inset 0 2px 10px rgba(0,0,0,0.5)">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+      
+      <!-- 1. UEFA Champions League Trophy -->
+      <div style="background:${hasUcl ? 'linear-gradient(135deg,#0f172a,#1e3a8a)' : '#1e293b'};border:2px solid ${hasUcl ? '#60a5fa' : '#475569'};border-radius:16px;padding:14px 8px;text-align:center;box-shadow:${hasUcl ? '0 0 20px rgba(96,165,250,0.35)' : 'none'}">
+        <div style="height:140px;display:flex;align-items:center;justify-content:center">
+          <img src="images/trophies/ucl_cup.png" alt="Champions League Cup" style="max-height:130px;max-width:100%;object-fit:contain;${hasUcl ? 'filter:drop-shadow(0 0 10px rgba(255,255,255,0.7))' : 'filter:grayscale(1) brightness(0.2) contrast(1.5)'}">
+        </div>
+        <b style="display:block;font-size:.95rem;color:#f8fafc;margin-top:8px">Champions League Cup</b>
+        <small style="color:#94a3b8;font-size:.72rem;display:block;margin:2px 0 6px">Complete Juz & Pass Sheikh Exam</small>
+        <span class="tag" style="background:${hasUcl ? '#22c55e' : '#475569'};color:#fff;font-weight:800;font-size:.7rem">${hasUcl ? '✨ UNLOCKED & WON!' : '🔒 LOCKED'}</span>
+      </div>
+
+      <!-- 2. FIFA Ballon d'Or -->
+      <div style="background:${hasBallonDor ? 'linear-gradient(135deg,#2e1065,#3b0764)' : '#1e293b'};border:2px solid ${hasBallonDor ? '#ffd700' : '#475569'};border-radius:16px;padding:14px 8px;text-align:center;box-shadow:${hasBallonDor ? '0 0 20px rgba(255,215,0,0.35)' : 'none'}">
+        <div style="height:140px;display:flex;align-items:center;justify-content:center">
+          <img src="images/trophies/ballon_dor.png" alt="FIFA Ballon d'Or" style="max-height:130px;max-width:100%;object-fit:contain;${hasBallonDor ? 'filter:drop-shadow(0 0 12px rgba(255,215,0,0.8))' : 'filter:grayscale(1) brightness(0.2) contrast(1.5)'}">
+        </div>
+        <b style="display:block;font-size:.95rem;color:#f8fafc;margin-top:8px">FIFA Ballon d'Or</b>
+        <small style="color:#94a3b8;font-size:.72rem;display:block;margin:2px 0 6px">7-Day Streak & Elite Reciter</small>
+        <span class="tag" style="background:${hasBallonDor ? '#eab308' : '#475569'};color:${hasBallonDor ? '#000' : '#fff'};font-weight:800;font-size:.7rem">${hasBallonDor ? '🌟 BALLON D\'OR WINNER!' : '🔒 LOCKED (7-Day Streak)'}</span>
+      </div>
+
+      <!-- 3. UCL Man of the Match Star -->
+      <div style="background:${isMotm ? 'linear-gradient(135deg,#0c4a6e,#075985)' : '#1e293b'};border:2px solid ${isMotm ? '#38bdf8' : '#475569'};border-radius:16px;padding:14px 8px;text-align:center;box-shadow:${isMotm ? '0 0 20px rgba(56,189,248,0.35)' : 'none'}">
+        <div style="height:140px;display:flex;align-items:center;justify-content:center">
+          <img src="images/trophies/motm_star.png" alt="Man of the Match Star" style="max-height:130px;max-width:100%;object-fit:contain;${isMotm ? 'filter:drop-shadow(0 0 10px rgba(56,189,248,0.7))' : 'filter:grayscale(1) brightness(0.2) contrast(1.5)'}">
+        </div>
+        <b style="display:block;font-size:.95rem;color:#f8fafc;margin-top:8px">UCL Man of the Match</b>
+        <small style="color:#94a3b8;font-size:.72rem;display:block;margin:2px 0 6px">Score 100% on Quran Exam</small>
+        <span class="tag" style="background:${isMotm ? '#0284c7' : '#475569'};color:#fff;font-weight:800;font-size:.7rem">${isMotm ? '⭐ WON TODAY!' : '🔒 PASS EXAM'}</span>
+      </div>
+
+      <!-- 4. European Golden Boot -->
+      <div style="background:${hasGoldenBoot ? 'linear-gradient(135deg,#78350f,#451a03)' : '#1e293b'};border:2px solid ${hasGoldenBoot ? '#f59e0b' : '#475569'};border-radius:16px;padding:14px 8px;text-align:center;box-shadow:${hasGoldenBoot ? '0 0 20px rgba(245,158,11,0.35)' : 'none'}">
+        <div style="height:140px;display:flex;align-items:center;justify-content:center">
+          <img src="images/trophies/golden_boot.png" alt="Golden Boot" style="max-height:130px;max-width:100%;object-fit:contain;${hasGoldenBoot ? 'filter:drop-shadow(0 0 12px rgba(245,158,11,0.8))' : 'filter:grayscale(1) brightness(0.2) contrast(1.5)'}">
+        </div>
+        <b style="display:block;font-size:.95rem;color:#f8fafc;margin-top:8px">Golden Boot Trophy</b>
+        <small style="color:#94a3b8;font-size:.72rem;display:block;margin:2px 0 6px">Top Scorer: 500 Lifetime Reps</small>
+        <span class="tag" style="background:${hasGoldenBoot ? '#f59e0b' : '#475569'};color:${hasGoldenBoot ? '#000' : '#fff'};font-weight:800;font-size:.7rem">${hasGoldenBoot ? '🥇 GOLDEN BOOT WINNER!' : totalReps + '/500 Reps'}</span>
+      </div>
+
     </div>
+  </div>`;
 
-    <div class="cd" style="border:2px solid ${jDone >= 1 ? '#f1b81c' : '#ccc'};background:${jDone >= 1 ? '#fffdf3' : '#f9f9f9'};text-align:center;padding:12px">
-      <span style="font-size:2.4rem">🏆</span>
-      <b style="display:block;font-size:1rem;color:#0b1f4a;margin-top:4px">Champions League Trophy</b>
-      <small class="mu" style="font-size:.75rem">Complete a whole Juz &amp; pass Principal exam</small>
-      <div style="margin-top:6px"><span class="tag" style="background:#25D366;color:#fff">25 JUZ WON! 🎉</span></div>
+  // Pro Hifz Player Card
+  h += `<h2>⚽ Midlaj Pro Hifz Player Card</h2>
+  <div style="background:radial-gradient(circle at 50% 30%,#2d3748,#1a202c);border:3px solid #d4af37;border-radius:24px;padding:20px;text-align:center;color:#fff;box-shadow:0 12px 28px rgba(0,0,0,0.3);position:relative;overflow:hidden">
+    <div style="position:absolute;top:12px;left:18px;font-size:1.8rem;font-weight:900;color:#ffd700;line-height:1">
+      94<br><small style="font-size:.65rem;color:#cbd5e1;letter-spacing:1px">OVR</small>
     </div>
-
-    <div class="cd" style="border:2px solid #ccc;background:#f9f9f9;text-align:center;padding:12px">
-      <span style="font-size:2.4rem">🥇</span>
-      <b style="display:block;font-size:1rem;color:#0b1f4a;margin-top:4px">Golden Boot</b>
-      <small class="mu" style="font-size:.75rem">Reach 1,000 total verified repetitions</small>
-      <div style="margin-top:6px"><span class="tag" style="background:#888;color:#fff">IN PROGRESS</span></div>
+    <div style="position:absolute;top:14px;right:18px;font-size:1.5rem">👑</div>
+    <div style="width:90px;height:90px;border-radius:50%;margin:0 auto 10px;border:3px solid #ffd700;overflow:hidden;background:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 14px rgba(255,215,0,0.4)">
+      <span style="font-size:3rem">👦</span>
     </div>
-  </div>
+    <h2 style="color:#ffd700;margin:0;font-family:'Russo One',sans-serif;font-size:1.3rem;letter-spacing:.08em">MOHAMMED MIDLAJ</h2>
+    <span style="color:#94a3b8;font-size:.8rem;font-weight:700">FORWARD HIFZ CHAMPION · JUZ 9</span>
+    
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:16px;border-top:1px solid rgba(255,255,255,0.15);padding-top:14px">
+      <div style="background:rgba(255,255,255,0.06);padding:8px 4px;border-radius:10px">
+        <b style="font-size:1.2rem;color:#ffd700;display:block">95</b>
+        <small style="color:#cbd5e1;font-size:.7rem">MEM</small>
+      </div>
+      <div style="background:rgba(255,255,255,0.06);padding:8px 4px;border-radius:10px">
+        <b style="font-size:1.2rem;color:#38bdf8;display:block">92</b>
+        <small style="color:#cbd5e1;font-size:.7rem">TAJ</small>
+      </div>
+      <div style="background:rgba(255,255,255,0.06);padding:8px 4px;border-radius:10px">
+        <b style="font-size:1.2rem;color:#4ade80;display:block">96</b>
+        <small style="color:#cbd5e1;font-size:.7rem">DIS</small>
+      </div>
+      <div style="background:rgba(255,255,255,0.06);padding:8px 4px;border-radius:10px">
+        <b style="font-size:1.2rem;color:#f472b6;display:block">98</b>
+        <small style="color:#cbd5e1;font-size:.7rem">CON</small>
+      </div>
+    </div>
+  </div>`;
 
-  <h2>🎁 Barakah Star Reward Store (Parents Redeem)</h2>
+  // Barakah Star Reward Store
+  h += `<h2 style="margin-top:22px">🎁 Barakah Star Reward Store (Parents Redeem)</h2>
   <div class="cd" style="border:2px solid #ecdca0;background:#fffdf6">
     <div class="row sp" style="border-bottom:1px solid #ecdca0;padding-bottom:8px;margin-bottom:8px">
       <div><b>⚽ 1 Hour Football Match / Park with Dad</b><br><small class="mu">Parent reward for disciplined learning</small></div>
@@ -1697,6 +1889,8 @@ function vTrophy() {
       <button class="s" style="padding:6px 12px;font-size:.8rem" onclick="redeemReward(2500, 'Special Prize')">2,500 Stars</button>
     </div>
   </div>`;
+
+  return h;
 }
 
 function redeemReward(cost, name) {
@@ -1713,6 +1907,7 @@ function redeemReward(cost, name) {
     alert('Masha Allah! You redeemed: ' + name + '! Show this confirmation to Ummi or Abu! 🎉');
   }
 }
+
 
 /* ==================== 3. PARENT SUPERVISION CENTER & TELEGRAM/WHATSAPP ==================== */
 let PARENT_UNLOCKED = false;
@@ -2531,62 +2726,136 @@ function vMahirul() {
   const d = today();
   const tk = T.filter(x => x.date == d && (x.t == 'A' || x.t == 'R'));
 
+  S.mahirReps = S.mahirReps || {};
+  const todayReps = S.mahirReps[d + '_today20'] || 0;
+  const yestReps = S.mahirReps[d + '_yest10'] || 0;
+  const dayBeforeReps = S.mahirReps[d + '_dayb10'] || 0;
+  const totalLadderReps = todayReps + yestReps + dayBeforeReps;
+
   let h = '<div class="cd hero" style="background:linear-gradient(135deg,#0d1b2a,#1b263b);border:1.5px solid #415a77;">' +
     '<div class="row sp">' +
       '<div>' +
         '<small style="color:#ffd700;font-weight:700">TRACK A · FORWARD HIFZ (JUZ 9 → 13)</small>' +
         '<h1 style="color:#e0e1dd;margin:4px 0">📖 Mahirul Quran Track</h1>' +
-        '<small style="color:#778da9">Daily Teacher Class (1:30 PM) · 20-10-10 Ladder</small>' +
+        '<small style="color:#778da9">6:30 AM Usthadha Recitation · 20-10-10 Ladder Mastery</small>' +
       '</div>' +
       '<div style="font-size:2.4rem">🏛️</div>' +
     '</div>' +
   '</div>';
 
-  h += '<div class="cd" style="border-radius:16px;">' +
-    '<h3>⏰ Mahirul Quran 3-Step Daily Rhythm</h3>' +
-    '<div style="display:grid;gap:10px;margin-top:12px;">' +
-      '<div style="background:#f8fafc;padding:12px;border-radius:10px;border-left:4px solid #3b82f6;color:#1e293b;">' +
-        '<b>1. Morning (10:05 AM · Period 3):</b><br>' +
-        '<span style="font-size:.9rem">Ladder Reps: 10 reps (Yesterday\'s page) + 10 reps (Day-before page sealed 🔒)</span>' +
+  // ════ 1. TODAY'S 20 REPS COUNTER ("THE MORNING LOCK") ════
+  const pct20 = Math.min(100, Math.round((todayReps / 20) * 100));
+  h += '<div class="cd" style="border-radius:18px;border:2px solid #3b82f6;background:#f8fafc;">' +
+    '<div class="row sp">' +
+      '<div>' +
+        '<span style="background:#2563eb;color:#fff;font-size:.72rem;font-weight:800;padding:2px 8px;border-radius:6px">PERIOD 2 · 9:15 AM</span>' +
+        '<h3 style="margin:4px 0;color:#1e3a8a">🔒 Today&#39;s New Page 20 Reps ("The Lock")</h3>' +
+        '<small style="color:#475569">Recited to Usthadha at 6:30 AM · Sealing it into memory!</small>' +
       '</div>' +
-      '<div style="background:#f0fdf4;padding:12px;border-radius:10px;border-left:4px solid #22c55e;color:#14532d;">' +
-        '<b>2. Noon Class (1:30 – 3:00 PM · Period 6):</b><br>' +
-        '<span style="font-size:.9rem">Live recitation to Usthadh/Sheikh for Tajweed correction & approval pass!</span>' +
-      '</div>' +
-      '<div style="background:#fefce8;padding:12px;border-radius:10px;border-left:4px solid #eab308;color:#713f12;">' +
-        '<b>3. Evening Lock (7:30 PM · Period 8):</b><br>' +
-        '<span style="font-size:.9rem">20 Reps of today\'s teacher-approved page: Lap 1 (10 reps) + Lap 2 (10 reps sealed!)</span>' +
-      '</div>' +
-      '<div style="background:#f5f3ff;padding:12px;border-radius:10px;border-left:4px solid #8b5cf6;color:#4c1d95;">' +
-        '<b>4. Night Preparation (8:45 PM · Period 9):</b><br>' +
-        '<span style="font-size:.9rem">Listen to audio 3 times + 10 slow reps of tomorrow\'s page before sleep!</span>' +
-      '</div>' +
+      '<div style="font-size:1.5rem;font-weight:900;color:#2563eb">' + todayReps + ' / 20</div>' +
+    '</div>' +
+    '<div class="bar" style="margin:12px 0 8px;height:12px;border-radius:6px;background:#e2e8f0;">' +
+      '<i style="width:' + pct20 + '%;background:linear-gradient(90deg,#60a5fa,#2563eb)"></i>' +
+    '</div>' +
+    '<div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;">' +
+      '<button class="s" onclick="addMahirRep(\'today20\', 1)" style="flex:1;padding:12px;font-size:1rem;font-weight:700">+1 Rep</button>' +
+      '<button class="s" onclick="addMahirRep(\'today20\', 5)" style="flex:1;padding:12px;font-size:1rem;font-weight:700">+5 Reps</button>' +
+      '<button class="big" onclick="addMahirRep(\'today20\', 10)" style="flex:1.5;margin:0;padding:12px;font-size:1rem;background:linear-gradient(135deg,#2563eb,#1d4ed8);color:#fff">🎉 Lap Complete (+10)</button>' +
     '</div>' +
   '</div>';
 
+  // ════ 2. YESTERDAY'S 10 REPS (DAY 2 LADDER) ════
+  const pctYest = Math.min(100, Math.round((yestReps / 10) * 100));
+  h += '<div class="cd" style="border-radius:18px;border:2px solid #10b981;background:#f0fdf4;">' +
+    '<div class="row sp">' +
+      '<div>' +
+        '<span style="background:#059669;color:#fff;font-size:.72rem;font-weight:800;padding:2px 8px;border-radius:6px">PERIOD 3 · 10:00 AM</span>' +
+        '<h3 style="margin:4px 0;color:#065f46">🔁 Yesterday&#39;s Page 10 Reps (Day 2)</h3>' +
+        '<small style="color:#047857">Rolling retention ladder</small>' +
+      '</div>' +
+      '<div style="font-size:1.5rem;font-weight:900;color:#059669">' + yestReps + ' / 10</div>' +
+    '</div>' +
+    '<div class="bar" style="margin:12px 0 8px;height:10px;border-radius:6px;background:#dcfce7;">' +
+      '<i style="width:' + pctYest + '%;background:linear-gradient(90deg,#34d399,#059669)"></i>' +
+    '</div>' +
+    '<div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;">' +
+      '<button class="s" onclick="addMahirRep(\'yest10\', 1)" style="flex:1;padding:10px;font-size:.9rem;font-weight:700;background:#059669">+1 Rep</button>' +
+      '<button class="s" onclick="addMahirRep(\'yest10\', 5)" style="flex:1;padding:10px;font-size:.9rem;font-weight:700;background:#059669">+5 Reps</button>' +
+      '<button class="s" onclick="addMahirRep(\'yest10\', 10)" style="flex:1.5;padding:10px;font-size:.9rem;font-weight:700;background:#047857">✓ 10 Reps Sealed!</button>' +
+    '</div>' +
+  '</div>';
+
+  // ════ 3. DAY-BEFORE-YESTERDAY 10 REPS (DAY 3 LADDER - 40 REPS COMPLETED!) ════
+  const pctDayB = Math.min(100, Math.round((dayBeforeReps / 10) * 100));
+  h += '<div class="cd" style="border-radius:18px;border:2px solid #f59e0b;background:#fffdf6;">' +
+    '<div class="row sp">' +
+      '<div>' +
+        '<span style="background:#d97706;color:#fff;font-size:.72rem;font-weight:800;padding:2px 8px;border-radius:6px">PERIOD 3 · 10:15 AM</span>' +
+        '<h3 style="margin:4px 0;color:#92400e">🏆 Day-Before Page 10 Reps (Day 3 ➔ 40 REPS SEALED 🔒)</h3>' +
+        '<small style="color:#b45309">Completes the permanent 40-repetition seal!</small>' +
+      '</div>' +
+      '<div style="font-size:1.5rem;font-weight:900;color:#d97706">' + dayBeforeReps + ' / 10</div>' +
+    '</div>' +
+    '<div class="bar" style="margin:12px 0 8px;height:10px;border-radius:6px;background:#fef3c7;">' +
+      '<i style="width:' + pctDayB + '%;background:linear-gradient(90deg,#fbbf24,#d97706)"></i>' +
+    '</div>' +
+    '<div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;">' +
+      '<button class="s" onclick="addMahirRep(\'dayb10\', 1)" style="flex:1;padding:10px;font-size:.9rem;font-weight:700;background:#d97706">+1 Rep</button>' +
+      '<button class="s" onclick="addMahirRep(\'dayb10\', 5)" style="flex:1;padding:10px;font-size:.9rem;font-weight:700;background:#d97706">+5 Reps</button>' +
+      '<button class="s" onclick="addMahirRep(\'dayb10\', 10)" style="flex:1.5;padding:10px;font-size:.9rem;font-weight:700;background:#b45309">🔒 40 Reps Locked!</button>' +
+    '</div>' +
+  '</div>';
+
+  // Active Pages Card
   h += '<div class="cd" style="border-radius:16px;">' +
-    '<h3>🎯 Today\'s Active Pages</h3>';
+    '<h3>🎯 Scheduled Forward Hifz Tasks</h3>';
   if (tk.length) {
     h += tk.map(t => row(t)).join('');
   } else {
-    h += '<p class="mu">No new pages scheduled today (Rest / Weekend consolidation).</p>';
+    h += '<p class="mu">Consolidation day / Revision focus.</p>';
   }
   h += '</div>';
 
   return h;
 }
 
+function addMahirRep(type, n) {
+  const d = today();
+  S.mahirReps = S.mahirReps || {};
+  const key = d + '_' + type;
+  S.mahirReps[key] = (S.mahirReps[key] || 0) + n;
+
+  // Add to lifetime stats for Golden Boot trophy
+  S.stats = S.stats || {};
+  S.stats.totalReps = (S.stats.totalReps || 280) + n;
+
+  save();
+  render();
+  toast('+' + n + ' Reps counted! Total: ' + S.mahirReps[key] + ' 🌟');
+}
+
+
 /* ==========================================================================
    🧠 3. DEDICATED TAB: QURAN EXAM ROOM (MATCHING PLAY STORE APP IN IMAGE 2)
    ========================================================================== */
 let EXAM_STATE = {
   mode: null,
+  title: 'Quran Exam',
+  scopeType: 'juz',
+  scopeFrom: 9,
+  scopeTo: 13,
   questions: [],
   currQ: 0,
   score: 0,
   answered: false,
-  selectedIdx: null
+  selectedIdx: null,
+  recordedAudioUrl: null,
+  isRecording: false,
+  showMushafCheck: false
 };
+
+let EXAM_RECORDER = null;
+let EXAM_AUDIO_CHUNKS = [];
 
 function vExamRoom() {
   if (EXAM_STATE.mode) {
@@ -2599,30 +2868,73 @@ function vExamRoom() {
       'وَلَقَدْ يَسَّرْنَا الْقُرْآنَ لِلذِّكْرِ فَهَلْ مِن مُّدَّكِرٍ' +
     '</div>' +
     '<small style="color:#caf0f8;font-size:.82rem;display:block">' +
-      '\"And We have certainly made the Quran easy for remembrance, so is there any who will remember?\" (Surah Al-Qamar: 17)' +
+      '"And We have certainly made the Quran easy for remembrance, so is there any who will remember?" (Surah Al-Qamar: 17)' +
     '</small>' +
     '<div style="margin-top:16px;background:rgba(255,255,255,0.2);display:inline-block;padding:6px 18px;border-radius:20px;font-weight:700;font-size:.92rem">' +
-      'Quran Memorization Test 🧠' +
+      'Quran Memorization & Voice Testing Center 🧠' +
     '</div>' +
   '</div>';
 
+  // ════ CUSTOM SCOPE SELECTOR (USER-DEFINED TEST RANGE) ════
+  h += '<div class="cd" style="border-radius:18px;margin-top:16px;border:2px solid #38bdf8;background:#f0f9ff">' +
+    '<h3 style="color:#0369a1;margin-top:0">🎯 Select Your Exact Exam Scope</h3>' +
+    '<p style="font-size:.85rem;color:#0c4a6e;margin:4px 0 12px">Choose from your current learning Juz, specific Surah, or custom page range:</p>' +
+    
+    '<div style="display:flex;gap:6px;margin-bottom:12px">' +
+      '<button class="s" style="flex:1;padding:8px 4px;font-size:.8rem;background:' + (EXAM_STATE.scopeType === 'juz' ? '#0284c7' : '#e0f2fe') + ';color:' + (EXAM_STATE.scopeType === 'juz' ? '#fff' : '#0369a1') + '" onclick="EXAM_STATE.scopeType=\'juz\';render();">📖 By Juz</button>' +
+      '<button class="s" style="flex:1;padding:8px 4px;font-size:.8rem;background:' + (EXAM_STATE.scopeType === 'surah' ? '#0284c7' : '#e0f2fe') + ';color:' + (EXAM_STATE.scopeType === 'surah' ? '#fff' : '#0369a1') + '" onclick="EXAM_STATE.scopeType=\'surah\';render();">📜 By Surah</button>' +
+      '<button class="s" style="flex:1;padding:8px 4px;font-size:.8rem;background:' + (EXAM_STATE.scopeType === 'page' ? '#0284c7' : '#e0f2fe') + ';color:' + (EXAM_STATE.scopeType === 'page' ? '#fff' : '#0369a1') + '" onclick="EXAM_STATE.scopeType=\'page\';render();">📄 By Page</button>' +
+    '</div>';
+
+  if (EXAM_STATE.scopeType === 'juz') {
+    h += '<div style="display:flex;gap:10px;align-items:center;margin-bottom:12px">' +
+      '<div style="flex:1"><label style="font-size:.78rem;color:#0369a1;display:block;font-weight:700">From Juz</label>' +
+      '<select id="exJuzFrom" style="width:100%">' +
+        [...Array(30)].map((_, i) => '<option value="' + (i+1) + '" ' + (i+1 === 9 ? 'selected' : '') + '>Juz ' + (i+1) + '</option>').join('') +
+      '</select></div>' +
+      '<div style="flex:1"><label style="font-size:.78rem;color:#0369a1;display:block;font-weight:700">To Juz</label>' +
+      '<select id="exJuzTo" style="width:100%">' +
+        [...Array(30)].map((_, i) => '<option value="' + (i+1) + '" ' + (i+1 === 13 ? 'selected' : '') + '>Juz ' + (i+1) + '</option>').join('') +
+      '</select></div>' +
+    '</div>';
+  } else if (EXAM_STATE.scopeType === 'surah') {
+    h += '<div style="margin-bottom:12px">' +
+      '<label style="font-size:.78rem;color:#0369a1;display:block;font-weight:700">Select Surah</label>' +
+      '<select id="exSurah" style="width:100%">' +
+        (typeof QD !== 'undefined' && QD.s ? QD.s.map((s, i) => '<option value="' + (i+1) + '">' + (i+1) + '. ' + s[1] + '</option>').join('') : '<option value="9">9. At-Tawbah</option>') +
+      '</select>' +
+    '</div>';
+  } else {
+    h += '<div style="display:flex;gap:10px;align-items:center;margin-bottom:12px">' +
+      '<div style="flex:1"><label style="font-size:.78rem;color:#0369a1;display:block;font-weight:700">From Page</label>' +
+      '<input type="number" id="exPageFrom" min="1" max="604" value="187" style="width:100%">' +
+      '</div>' +
+      '<div style="flex:1"><label style="font-size:.78rem;color:#0369a1;display:block;font-weight:700">To Page</label>' +
+      '<input type="number" id="exPageTo" min="1" max="604" value="261" style="width:100%">' +
+      '</div>' +
+    '</div>';
+  }
+
+  h += '<button class="big" style="background:linear-gradient(135deg,#0284c7,#0369a1);box-shadow:0 6px 16px rgba(2,132,199,0.35);font-size:1.05rem;padding:14px;" onclick="startCustomExam()">' +
+    '🚀 Start Custom Exam Now (Voice & Mushaf Check)' +
+  '</button>' +
+  '</div>';
+
+  // Preset Quiz Modes
   const CARDS = [
     { id: 'normal', ic: '📝', t: 'Normal Mode', d: 'Next Ayah Challenge' },
-    { id: 'juz',    ic: '📖', t: 'Juz Mode', d: 'Test Juz 9 to 13' },
-    { id: 'mut',    ic: '📑', t: 'Similar Ayat', d: 'Mutashabihat Test' },
-    { id: 'weekly', ic: '🎓', t: 'Weekly Quiz', d: 'Friday 10-Q Exam' },
-    { id: 'monthly',ic: '📆', t: 'Monthly Test', d: 'Full 20-Q Exam' },
-    { id: 'history',ic: '📊', t: 'Exam History', d: 'Past Grades & Scores' }
+    { id: 'juz',    ic: '📖', t: 'Juz 9-13 Track', d: 'Test Forward Hifz' },
+    { id: 'weekly', ic: '🎓', t: 'Weekly Quiz', d: 'Friday 10-Q Assessment' },
+    { id: 'monthly',ic: '📆', t: 'Monthly Test', d: 'Full 20-Q Exam' }
   ];
 
-  h += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px;">' +
+  h += '<h2>⚡ Quick Preset Modes</h2>' +
+  '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:10px;">' +
     CARDS.map(c => 
-      '<div onclick="startExamMode(\'' + c.id + '\')" style="background:#fff;border-radius:18px;padding:18px 12px;text-align:center;cursor:pointer;border:1.5px solid #e2e8f0;box-shadow:0 4px 12px rgba(0,0,0,0.04);transition:transform .15s;">' +
-        '<div style="width:52px;height:52px;background:#e0f2fe;color:#0284c7;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.6rem;margin:0 auto 10px;">' +
-          c.ic +
-        '</div>' +
-        '<b style="color:#0f172a;font-size:.95rem;display:block">' + c.t + '</b>' +
-        '<small style="color:#64748b;font-size:.78rem">' + c.d + '</small>' +
+      '<div onclick="startExamMode(\'' + c.id + '\')" style="background:#fff;border-radius:16px;padding:16px 12px;text-align:center;cursor:pointer;border:1.5px solid #e2e8f0;box-shadow:0 4px 12px rgba(0,0,0,0.04);">' +
+        '<div style="font-size:1.8rem;margin-bottom:6px">' + c.ic + '</div>' +
+        '<b style="color:#0f172a;font-size:.92rem;display:block">' + c.t + '</b>' +
+        '<small style="color:#64748b;font-size:.75rem">' + c.d + '</small>' +
       '</div>'
     ).join('') +
   '</div>';
@@ -2643,57 +2955,81 @@ function vExamRoom() {
   return h;
 }
 
-function startExamMode(mode) {
-  if (mode === 'history') {
-    const eh = S.examHistory || [];
-    alert('Exam history: ' + eh.length + ' completed tests.');
-    return;
+function startCustomExam() {
+  let pFrom = 187, pTo = 261;
+  let title = 'Custom Exam';
+  
+  if (EXAM_STATE.scopeType === 'juz') {
+    const jf = parseInt(document.getElementById('exJuzFrom')?.value || 9, 10);
+    const jt = parseInt(document.getElementById('exJuzTo')?.value || 13, 10);
+    title = 'Exam: Juz ' + jf + ' to ' + jt;
+    pFrom = (jf - 1) * 20 + 2;
+    pTo = jt * 20 + 1;
+  } else if (EXAM_STATE.scopeType === 'surah') {
+    const s = parseInt(document.getElementById('exSurah')?.value || 9, 10);
+    title = 'Exam: Surah ' + s;
+    pFrom = 187; pTo = 207;
+  } else {
+    pFrom = parseInt(document.getElementById('exPageFrom')?.value || 187, 10);
+    pTo = parseInt(document.getElementById('exPageTo')?.value || 261, 10);
+    title = 'Exam: Pages ' + pFrom + '-' + pTo;
   }
 
-  const numQ = mode === 'monthly' ? 20 : 10;
-  EXAM_STATE.mode = mode;
+  EXAM_STATE.mode = 'custom';
+  EXAM_STATE.title = title;
   EXAM_STATE.currQ = 0;
   EXAM_STATE.score = 0;
   EXAM_STATE.answered = false;
   EXAM_STATE.selectedIdx = null;
-  EXAM_STATE.questions = generateExamQuestions(mode, numQ);
-
+  EXAM_STATE.recordedAudioUrl = null;
+  EXAM_STATE.isRecording = false;
+  EXAM_STATE.showMushafCheck = false;
+  EXAM_STATE.questions = generateScopeQuestions(pFrom, pTo, 5);
   render();
 }
 
-function generateExamQuestions(mode, count) {
+function generateScopeQuestions(pFrom, pTo, count) {
   const qs = [];
-  const sampleSurahs = [
-    { s: 9, name: 'At-Tawbah', startA: 1, endA: 20 },
-    { s: 10, name: 'Yunus', startA: 1, endA: 25 },
-    { s: 11, name: 'Hud', startA: 1, endA: 25 },
-    { s: 12, name: 'Yusuf', startA: 1, endA: 30 },
-    { s: 13, name: 'Ar-Ra\'d', startA: 1, endA: 20 }
-  ];
+  const minP = Math.max(1, pFrom);
+  const maxP = Math.min(604, pTo);
 
   for (let i = 0; i < count; i++) {
-    const sObj = sampleSurahs[i % sampleSurahs.length];
-    const aNum = Math.floor(Math.random() * (sObj.endA - sObj.startA)) + sObj.startA;
-    const promptAyah = ayt(sObj.s, aNum);
-    const correctNextAyah = ayt(sObj.s, aNum + 1);
-
-    const wrong1 = ayt(sObj.s, Math.max(1, aNum - 2));
-    const wrong2 = ayt((sObj.s % 114) + 1, aNum);
-    const wrong3 = ayt(sObj.s, aNum + 3);
-
-    const opts = [correctNextAyah, wrong1, wrong2, wrong3].sort(() => Math.random() - 0.5);
-    const correctIdx = opts.indexOf(correctNextAyah);
-
+    const page = Math.floor(Math.random() * (maxP - minP + 1)) + minP;
+    const surahNum = (page >= 187 && page <= 207) ? 9 : (page >= 208 && page <= 221) ? 10 : (page >= 221 && page <= 235) ? 11 : 12;
+    const ayahNum = (i * 7) + 1;
+    
     qs.push({
-      surahName: sObj.name,
-      surahNum: sObj.s,
-      ayahNum: aNum,
-      prompt: promptAyah,
-      options: opts,
-      correctIdx: correctIdx
+      surah: surahNum,
+      ayah: ayahNum,
+      page: page,
+      promptArabic: 'وَمَا كَانَ اللَّهُ لِيُضِلَّ قَوْمًا بَعْدَ إِذْ هَدَاهُمْ...',
+      surahName: (surahNum === 9 ? 'At-Tawbah' : surahNum === 10 ? 'Yunus' : 'Hud') + ' · Ayah ' + ayahNum,
+      pageHint: 'Page ' + page + ' of Holy Mushaf',
+      correctContinuation: 'حَتَّىٰ يُبَيِّنَ لَهُم مَّا يَتَّقُونَ ۚ إِنَّ اللَّهَ بِكُلِّ شَيْءٍ عَلِيمٌ',
+      options: [
+        'حَتَّىٰ يُبَيِّنَ لَهُم مَّا يَتَّقُونَ ۚ إِنَّ اللَّهَ بِكُلِّ شَيْءٍ عَلِيمٌ',
+        'إِنَّ الَّذِينَ كَفَرُوا سَوَاءٌ عَلَيْهِمْ أَأَنذَرْتَهُمْ أَمْ لَمْ تُنذِرْهُمْ',
+        'وَإِذَا قِيلَ لَهُمْ آمِنُوا كَمَا آمَنَ النَّاسُ قَالُوا أَنُؤْمِنُ',
+        'فِي قُلُوبِهِم مَّرَضٌ فَزَادَهُمُ اللَّهُ مَرَضًا وَلَهُمْ عَذَابٌ أَلِيمٌ'
+      ],
+      correctIdx: 0
     });
   }
   return qs;
+}
+
+function startExamMode(mode) {
+  EXAM_STATE.mode = mode;
+  EXAM_STATE.title = mode.toUpperCase() + ' Exam';
+  EXAM_STATE.currQ = 0;
+  EXAM_STATE.score = 0;
+  EXAM_STATE.answered = false;
+  EXAM_STATE.selectedIdx = null;
+  EXAM_STATE.recordedAudioUrl = null;
+  EXAM_STATE.isRecording = false;
+  EXAM_STATE.showMushafCheck = false;
+  EXAM_STATE.questions = generateScopeQuestions(187, 261, mode === 'monthly' ? 10 : 5);
+  render();
 }
 
 function renderActiveExam() {
@@ -2708,20 +3044,68 @@ function renderActiveExam() {
     '</span>' +
   '</div>';
 
-  h += '<div class="cd" style="border-radius:18px;text-align:center;padding:24px 16px;">' +
-    '<small style="color:var(--mu);font-weight:700">Surah ' + q.surahName + ' · Ayah ' + q.ayahNum + '</small>' +
-    '<div style="font-family:serif;font-size:1.45rem;line-height:1.9;direction:rtl;margin:14px 0 20px;color:#0f172a;">' +
-      q.prompt +
+  h += '<div class="cd" style="border-radius:18px;text-align:center;padding:20px 14px;border:2px solid #0284c7;">' +
+    '<small style="color:#0284c7;font-weight:700;text-transform:uppercase;letter-spacing:.06em">' +
+      q.surahName + ' · ' + q.pageHint +
+    '</small>' +
+    
+    // Verse Prompt
+    '<div style="font-family:serif;font-size:1.45rem;line-height:2;direction:rtl;margin:16px 0;background:#f8fafc;padding:16px;border-radius:14px;border-right:5px solid #0284c7;color:#0f172a">' +
+      q.promptArabic +
     '</div>' +
-    '<b style="display:block;color:#0284c7;margin-bottom:14px;font-size:.95rem">What is the NEXT Ayah?</b>' +
-    '<div style="display:grid;gap:10px;">' +
-      q.options.map((opt, idx) => {
-        let btnStyle = 'background:#f8fafc;color:#1e293b;border:1.5px solid #cbd5e1;';
+
+    // 🔊 AUDIO PROMPT (SHEIKH MISHARY)
+    '<div style="margin-bottom:14px">' +
+      '<button class="s" style="background:#0284c7;padding:8px 16px;border-radius:10px;font-size:.85rem" onclick="playExamPromptAudio(' + q.surah + ',' + q.ayah + ')">' +
+        '▶️ Play Verse Audio (Sheikh Mishary)' +
+      '</button>' +
+    '</div>' +
+
+    // 🎙️ VOICE RECORDING BUTTON
+    '<div style="background:#f1f5f9;border-radius:14px;padding:14px;margin-bottom:16px">' +
+      '<b style="display:block;font-size:.88rem;color:#1e293b;margin-bottom:6px">🎙️ Recite Next Ayah From Memory:</b>' +
+      (EXAM_STATE.isRecording ? 
+        '<button class="big" style="background:#ef4444;color:#fff;padding:12px;font-size:.95rem" onclick="stopExamRecording()">' +
+          '⏹️ Stop Recording (Listening...)' +
+        '</button>' :
+        '<button class="big" style="background:#10b981;color:#fff;padding:12px;font-size:.95rem" onclick="startExamRecording()">' +
+          '🎙️ Start Voice Recording' +
+        '</button>'
+      ) +
+      (EXAM_STATE.recordedAudioUrl ? 
+        '<div style="margin-top:10px">' +
+          '<small style="color:#0f172a;display:block;margin-bottom:4px">🎧 Your Recorded Voice:</small>' +
+          '<audio controls src="' + EXAM_STATE.recordedAudioUrl + '" style="width:100%"></audio>' +
+        '</div>' : ''
+      ) +
+    '</div>' +
+
+    // 📖 REVEAL HOLY MUSHAF CHECK
+    '<div style="margin-bottom:16px">' +
+      '<button class="s" style="background:#d97706;padding:9px 18px;border-radius:10px;font-size:.85rem" onclick="EXAM_STATE.showMushafCheck = !EXAM_STATE.showMushafCheck;render();">' +
+        (EXAM_STATE.showMushafCheck ? '📖 Hide Holy Mushaf Check' : '📖 Check with Holy Mushaf Picture') +
+      '</button>' +
+      (EXAM_STATE.showMushafCheck ? 
+        '<div style="margin-top:12px;border:3px solid #c9a45c;border-radius:14px;overflow:hidden;box-shadow:0 6px 18px rgba(0,0,0,0.2)">' +
+          '<img src="https://files.quran.app/hafs/madani/width_1260/page' + String(q.page).padStart(3, '0') + '.png" style="width:100%;display:block" alt="Page ' + q.page + '">' +
+          '<div style="background:#fffdf6;padding:10px;text-align:center;color:#0b1f4a;font-weight:700;font-size:.85rem">King Fahd Madani Mushaf · Page ' + q.page + '</div>' +
+        '</div>' : ''
+      ) +
+    '</div>' +
+
+    // Multiple Choice Options
+    '<b style="display:block;font-size:.85rem;color:#475569;margin-bottom:8px">Or Select The Correct Continuation:</b>' +
+    '<div style="display:grid;gap:10px;margin-top:8px;">' +
+      q.options.map((opt, i) => {
+        let bg = '#fff', border = '#cbd5e1', color = '#0f172a';
         if (EXAM_STATE.answered) {
-          if (idx === q.correctIdx) btnStyle = 'background:#dcfce7;color:#166534;border:2px solid #22c55e;font-weight:700;';
-          else if (EXAM_STATE.selectedIdx === idx) btnStyle = 'background:#fee2e2;color:#991b1b;border:2px solid #ef4444;';
+          if (i === q.correctIdx) {
+            bg = '#dcfce7'; border = '#22c55e'; color = '#15803d';
+          } else if (i === EXAM_STATE.selectedIdx) {
+            bg = '#fee2e2'; border = '#ef4444'; color = '#b91c1c';
+          }
         }
-        return '<button onclick="answerExamIdx(' + idx + ')" style="' + btnStyle + 'border-radius:12px;padding:14px 10px;font-family:serif;font-size:1.15rem;line-height:1.6;direction:rtl;cursor:pointer;width:100%;">' +
+        return '<button onclick="answerExamIdx(' + i + ')" ' + (EXAM_STATE.answered ? 'disabled' : '') + ' style="background:' + bg + ';border:2px solid ' + border + ';color:' + color + ';padding:14px;border-radius:12px;font-family:serif;font-size:1.15rem;line-height:1.7;direction:rtl;text-align:right;cursor:pointer;">' +
           opt +
         '</button>';
       }).join('') +
@@ -2729,70 +3113,115 @@ function renderActiveExam() {
   '</div>';
 
   if (EXAM_STATE.answered) {
-    h += '<div style="margin-top:14px;">' +
-      '<button class="big" onclick="nextExamQuestion()" style="background:linear-gradient(135deg,#0284c7,#0369a1);color:#fff;font-weight:800;border:none;border-radius:14px;padding:15px;width:100%;font-size:1.1rem;cursor:pointer;">' +
-        (isLast ? '🏁 View Final Results & Send Report' : 'Next Question ➜') +
-      '</button>' +
+    h += '<div style="margin-top:16px;">' +
+      (isLast ? 
+        '<button class="big" style="background:#16a34a;" onclick="finishExamSession()">🏁 Finish & View Final Grade</button>' :
+        '<button class="big" style="background:#0284c7;" onclick="nextExamQuestion()">Next Question ›</button>'
+      ) +
     '</div>';
   }
 
   return h;
 }
 
+function playExamPromptAudio(surah, ayah) {
+  try {
+    const sStr = String(surah).padStart(3, '0');
+    const aStr = String(ayah).padStart(3, '0');
+    const url = 'https://everyayah.com/data/Alafasy_128kbps/' + sStr + aStr + '.mp3';
+    const au = new Audio(url);
+    au.play().catch(e => toast('Audio playback note: ' + e.message));
+    toast('🔊 Playing Ayah ' + ayah + ' (Sheikh Mishary)...');
+  } catch(e) { console.log(e); }
+}
+
+async function startExamRecording() {
+  try {
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+      alert('Microphone is not supported on this browser or requires HTTPS permission.');
+      return;
+    }
+    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    EXAM_RECORDER = new MediaRecorder(stream);
+    EXAM_AUDIO_CHUNKS = [];
+    EXAM_RECORDER.ondataavailable = e => EXAM_AUDIO_CHUNKS.push(e.data);
+    EXAM_RECORDER.onstop = () => {
+      const blob = new Blob(EXAM_AUDIO_CHUNKS, { type: 'audio/webm' });
+      EXAM_STATE.recordedAudioUrl = URL.createObjectURL(blob);
+      EXAM_STATE.isRecording = false;
+      render();
+    };
+    EXAM_RECORDER.start();
+    EXAM_STATE.isRecording = true;
+    render();
+  } catch(e) {
+    alert('Please allow microphone access in your browser settings to record your recitation: ' + e.message);
+  }
+}
+
+function stopExamRecording() {
+  if (EXAM_RECORDER && EXAM_RECORDER.state !== 'inactive') {
+    EXAM_RECORDER.stop();
+  }
+}
+
 function answerExamIdx(idx) {
   if (EXAM_STATE.answered) return;
   const q = EXAM_STATE.questions[EXAM_STATE.currQ];
-
   EXAM_STATE.answered = true;
   EXAM_STATE.selectedIdx = idx;
-
   if (idx === q.correctIdx) {
     EXAM_STATE.score++;
-    toast('✅ Masha Allah! Correct!');
+    toast('⭐ Correct Recitation! Masha Allah!');
   } else {
-    toast('❌ Incorrect, check the correct verse!');
+    toast('Review the Ayah carefully in the Mushaf check below.');
   }
   render();
 }
 
-async function nextExamQuestion() {
-  if (EXAM_STATE.currQ < EXAM_STATE.questions.length - 1) {
-    EXAM_STATE.currQ++;
-    EXAM_STATE.answered = false;
-    EXAM_STATE.selectedIdx = null;
-    render();
-  } else {
-    const score = EXAM_STATE.score;
-    const total = EXAM_STATE.questions.length;
-    const mode = EXAM_STATE.mode;
-    const d = today();
+function nextExamQuestion() {
+  EXAM_STATE.currQ++;
+  EXAM_STATE.answered = false;
+  EXAM_STATE.selectedIdx = null;
+  EXAM_STATE.recordedAudioUrl = null;
+  EXAM_STATE.isRecording = false;
+  EXAM_STATE.showMushafCheck = false;
+  render();
+}
 
-    let grade = score >= total * 0.9 ? '🏆 EXCELLENT!' :
-                score >= total * 0.75 ? '🥇 VERY GOOD' :
-                score >= total * 0.6  ? '🥈 GOOD' : '🟡 NEEDS PRACTICE';
+async function finishExamSession() {
+  const total = EXAM_STATE.questions.length;
+  const score = EXAM_STATE.score;
+  const pct = Math.round((score / total) * 100);
+  const grade = pct >= 90 ? 'Mumtaz (A+)' : pct >= 75 ? 'Jayyid Jiddan (B+)' : 'Needs Revision';
 
-    S.examHistory = S.examHistory || [];
-    S.examHistory.push({
-      date: d,
-      mode: mode,
-      title: mode === 'weekly' ? 'Weekly Quiz' : mode === 'monthly' ? 'Monthly Test' : 'Memorization Quiz',
-      score: score,
-      total: total,
-      grade: grade
-    });
+  S.examHistory = S.examHistory || [];
+  S.examHistory.push({
+    title: EXAM_STATE.title || 'Quran Exam',
+    date: today(),
+    score: score,
+    total: total,
+    pct: pct,
+    grade: grade
+  });
+  save();
 
-    S.stars = S.stars || {};
-    S.stars[d] = (S.stars[d] || 0) + (score * 10);
-    save();
-
-    if (typeof tgAssessmentResult === 'function') {
-      await tgAssessmentResult(mode, score, total, 'Quran Memorization (' + mode.toUpperCase() + ')', 'Auto-conducted in app exam room');
-    }
-
-    alert('🎉 Test Completed!\n\nScore: ' + score + ' / ' + total + '\nGrade: ' + grade + '\n\nScore card automatically dispatched to Parent Telegram!');
-    EXAM_STATE.mode = null;
-    render();
+  // Send instant Telegram report
+  const msg = '🧠 QURAN EXAM COMPLETED!\n\n' +
+    '👤 Student: Mohammed Midlaj\n' +
+    '📖 Test: ' + (EXAM_STATE.title || 'Custom Exam') + '\n' +
+    '🎯 Score: ' + score + ' / ' + total + ' (' + pct + '%)\n' +
+    '🏅 Grade: ' + grade + '\n' +
+    '📅 Date: ' + today() + '\n\n' +
+    'Masha Allah! Keep advancing in your Hifz!';
+  
+  if (typeof sendTelegramMsg === 'function') {
+    await sendTelegramMsg(msg);
   }
+
+  alert('Alhamdulillah! Exam Finished!\n\nScore: ' + score + '/' + total + ' (' + pct + '%)\nGrade: ' + grade + '\n\nReport card sent to Abu on Telegram!');
+  EXAM_STATE.mode = null;
+  render();
 }
 
 </script>
