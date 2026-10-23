@@ -405,6 +405,7 @@ function vDay(){
  const targetDays=S.juz9TargetDays||15;
 
  let h='';
+ h+=`<div style="display:flex;justify-content:space-between;align-items:center;background:linear-gradient(135deg,#0d2818,#12372e);color:#ffd700;padding:8px 14px;border-radius:12px;margin-bottom:12px;font-size:.82rem;font-weight:700;border:1px solid rgba(255,215,0,0.35);box-shadow:0 4px 12px rgba(0,0,0,0.1)"><span>🕌 MIDLAJ ACADEMY v3</span><span style="color:#a7f3d0;font-weight:600;font-size:.75rem">📅 Mon 26 Oct 2026 · Ready</span></div>`;
 
  // ==================== 1. TOP ACTION BUTTONS ====================
  h+=`<div class="row sp" style="margin-bottom:12px;gap:8px">
@@ -1087,7 +1088,7 @@ let TX=0,TY=0;document.getElementById('app').addEventListener('touchstart',e=>{c
 document.getElementById('app').addEventListener('touchend',e=>{if(!e.target.closest||!e.target.closest('.tjimg')||(window.visualViewport&&visualViewport.scale>1.05))return;const t=e.changedTouches[0],dx=t.clientX-TX,dy=t.clientY-TY;if(Math.abs(dx)>70&&Math.abs(dy)<50){S.pp=Math.min(685,Math.max(1,S.pp+(dx>0?1:-1)));save();render();applyRM();scrollTo(0,0)}},{passive:true});
 boot();
 render();
-try{if("serviceWorker" in navigator&&location.protocol.startsWith("http"))navigator.serviceWorker.register("sw.js")}catch(e){}
+try{if("serviceWorker" in navigator&&location.protocol.startsWith("http"))navigator.serviceWorker.register("sw.js?v=3").then(r=>r.update())}catch(e){}
 
 /* ===== Midlaj Mentor, WhatsApp Report, Quick Diary & Homework Scanning ===== */
 let HW_PHOTOS = {};
