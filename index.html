@@ -127,10 +127,11 @@ h1,h2{font-family:"Russo One",Poppins,system-ui,sans-serif;font-weight:400}h2{co
 <main id="app"></main><div id="toast"></div>
 <nav class="nav">
   <button data-v="day" class="on"><i>⏰</i>Schedule</button>
-  <button data-v="reps"><i>🪜</i>20-10-10</button>
+  <button data-v="mahir"><i>📖</i>Mahirul</button>
+  <button data-v="ummi"><i>🌿</i>Ummi</button>
   <button data-v="school"><i>🏫</i>School</button>
+  <button data-v="exam"><i>🧠</i>Exam</button>
   <button data-v="trophy"><i>🏆</i>Trophies</button>
-  <button data-v="quran"><i>📖</i>Quran</button>
   <button data-v="parent"><i>🛡️</i>Parent</button>
 </nav><audio id="au" preload="auto" playsinline></audio><div id="pl"></div><div id="rbar"></div>
 <script>
@@ -168,7 +169,7 @@ function build(){T=[];const NP=+S.np||2,RP=+S.rpd||4,NR=+S.nr||40,cov={};
  const cnt={};T.forEach(t=>{if(t.date&&'ARB'.includes(t.t)){const c=cnt[t.date]=cnt[t.date]||{A:0,R:0,B:0};c[t.t]++}});
  const un=T.filter(t=>!t.date),A=un.filter(t=>t.t=='A'),R=un.filter(t=>t.t=='R'),B=un.filter(t=>t.t=='B'),E=un.filter(t=>t.t=='E'),by={};T.forEach(t=>by[t.id]=t);
  const pend=(j,d)=>T.some(x=>x.js[0]==j&&(x.t=='A'||x.t=='R')&&(!x.date||x.date>=d)),bpend=(j,d)=>T.some(x=>x.js[0]==j&&x.t=='B'&&(!x.date||x.date>=d));
- let d=S.start>today()?S.start:today(),g=0;
+ let d=S.start>today()?S.start:'2026-10-26',g=0;
  while((A.length||R.length||B.length||E.length)&&g++<1500){
   if(cap(d)>0){const c=cnt[d]=cnt[d]||{A:0,R:0,B:0};
    if(A.length&&c.A<1&&(S.gx===false||!rem.some(x=>x<A[0].js[0]&&!exOk(x,d)))&&(S.par!==false||!rem.some(x=>x<A[0].js[0]&&(pend(x,d)||bpend(x,d))))){A.shift().date=d;c.A++}
@@ -233,7 +234,7 @@ function vSet(){const rs=S.ram.from?`${fm(S.ram.from)} → ${fm(S.ram.to||ad(S.r
  <div class="cd"><b>🌙 Ramadan (very light mode)</b><p class="mu" style="margin:6px 0">Now: <b>${rs}</b>. Moon sighting changes dates, so guess now and fix later; the plan re-flows instantly. Ramadan days get 1 small task per weekday.</p><div class="row"><button class="s" id="rs">Ramadan started today</button><button class="s" id="re" style="background:var(--bd);color:var(--tx)">Eid / Ramadan over</button></div><div class="row" style="margin-top:8px">From <input type="date" id="r1" value="${S.ram.from}"> To <input type="date" id="r2" value="${S.ram.to}"></div></div>
  <div class="cd"><b>🎚 Difficulty</b> <small>(tap a juz: Flow → Steady → Summit)</small><div class="jg" style="margin-top:8px">${[...Array(30)].map((_,i)=>{const j=i+1,dn=S.dj.includes(j),df=S.diff[j]||'steady';return `<div class="j ${dn?'d':df}" data-j="${j}"><b>${j}</b>${dn?'done':NM[df]}</div>`}).join('')}</div><div class="row" style="margin-top:10px"><select id="mj">${[...Array(30)].map((_,i)=>`<option>${i+1}</option>`).join('')}</select><button class="s" id="md">Toggle "fully done"</button></div></div>
  ${dlCard()}<div class="cd"><b>Settings</b><p>Start date<br><input type="date" id="s1" value="${S.start}"></p><p>Hifz target end date<br><input type="date" id="s2" value="${S.end}"></p><p>Whole-Juz rounds per Juz<br><select id="s15">${[20,30,40].map(x=>`<option ${S.nr==x?'selected':''}>${x}</option>`).join('')}</select></p><p>New pages while whole-Juz rounds are running<br><select id="s16"><option value="1" ${S.par!==false?'selected':''}>Keep learning new pages</option><option value="0" ${S.par===false?'selected':''}>Pause until the rounds finish</option></select></p><p>Minutes per rep (new page laps)<br><input type="number" id="s11" value="${S.rm}" min="0.5" max="6" step="0.5" style="width:80px"></p><p>Minutes per whole-Juz round<br><input type="number" id="s12" value="${S.jm}" min="10" max="60" style="width:80px"></p><p>Afternoon Mahirul Quran class ends<br><input type="time" id="s13" value="${S.c2e}"></p><p>Prayer times (leave empty = automatic for Abu Dhabi)<br>Dhuhr <input type="time" id="s8" value="${S.pt.d}"> Maghrib <input type="time" id="s9" value="${S.pt.m}"> Isha <input type="time" id="s10" value="${S.pt.i}"></p><p>New pages per day<br><select id="s6">${[1,1.5,2,2.5].map(x=>`<option ${S.np==x?'selected':''}>${x}</option>`).join('')}</select></p><p>Juz rounds per day<br><select id="s7">${[1,2,3,4].map(x=>`<option ${S.rpd==x?'selected':''}>${x}</option>`).join('')}</select></p><p>Pace<br><select id="s4">${[['gentle','Gentle'],['std','Standard'],['fast','Fast']].map(x=>`<option value="${x[0]}" ${S.pace==x[0]?'selected':''}>${x[1]}</option>`).join('')}</select></p><p>Recitation audio<br><select id="s5"><option value="0" ${S.aloc?'':'selected'}>Online (stream)</option><option value="1" ${S.aloc?'selected':''}>Local folder: audio/001.mp3 …</option></select></p><small>Sat & Sun = repair days, Friday light. Data stays on this device.</small></div>`}
-function render(){build();$('app').innerHTML=(()=>{try{return {adhkar:vAdhkar,rev:vRev,day:vDay,school:vSchool,card:vCard,today:vToday,reps:vReps,khatm:vKhatm,quran:vQuran,tb:()=>adCard()+vTb(),plan:vPlan,set:()=>bkCard()+helpCard()+vSet(),chg:vChg,trophy:vTrophy,parent:vParent}[V]()}catch(e){return `<div class="cd"><b>This screen had a problem</b><br><small>${String(e&&e.message||e).slice(0,160)}</small><br><br><button class="big" onclick="S.q={s:1,from:1,to:7,each:1,rng:1,spd:1};QT='tj';V='day';save();render()">Repair and go home</button></div>`}})();document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('on',b.dataset.v==V))}
+function render(){build();$('app').innerHTML=(()=>{try{return {adhkar:vAdhkar,rev:vRev,day:vDay,school:vSchool,card:vCard,today:vToday,reps:vReps,mahir:vMahirul,ummi:vUmmiGarden,exam:vExamRoom,khatm:vKhatm,quran:vQuran,tb:()=>adCard()+vTb(),plan:vPlan,set:()=>bkCard()+helpCard()+vSet(),chg:vChg,trophy:vTrophy,parent:vParent}[V]()}catch(e){return `<div class="cd"><b>This screen had a problem</b><br><small>${String(e&&e.message||e).slice(0,160)}</small><br><br><button class="big" onclick="S.q={s:1,from:1,to:7,each:1,rng:1,spd:1};QT='tj';V='day';save();render()">Repair and go home</button></div>`}})();document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('on',b.dataset.v==V))}
 document.querySelector('.nav').onclick=e=>{if(RM){RM=0;applyRM()}const b=e.target.closest('button');if(b){V=b.dataset.v;RC=0;render();scrollTo(0,0)}};
 const rr=()=>{save();render()};
 /* ===== School-style daily timetable (Abu Dhabi time, 12-hour) ===== */
@@ -291,139 +292,89 @@ function rev(d) {
   return [{ j: pick, l, a: p + 1, b, r, n: b - p }];
 }
 function dayBlocks(d){
- const w=pd(d).getDay(),P=prayer(d),B=[],c2=hm(S.c2e)||855;
- const add=(s,e,k,ic,ti,su,o)=>B.push(Object.assign({s,e,k,ic,ti,su},o||{}));
- const tk=T.filter(x=>x.date==d);
- const na=tk.filter(x=>x.t=="A");
- const nr=tk.filter(x=>x.t=="R");
- const nb=tk.filter(x=>x.t=="B");
-
- let c=570; // 9:30 AM ACADEMY START
+ const w = pd(d).getDay(), P = prayer(d), B = [];
+ const add = (s, e, k, ic, ti, su, o) => B.push(Object.assign({s, e, k, ic, ti, su}, o || {}));
+ const tk = T.filter(x => x.date == d);
+ const na = tk.filter(x => x.t == "A");
+ const nr = tk.filter(x => x.t == "R");
+ const nb = tk.filter(x => x.t == "B");
 
  // FRIDAY SCHEDULE: TILL 10:00 AM ONLY!
- if(w===5){
-  add(c,c+15,"ad","📿","Period 1 · Friday Morning Adhkar (Adhkar as-Sabah)","Start blessed Friday with morning remembrance & protection dua",{pk:"adm",ad:3,period:1});
-  c+=15; // 9:45 AM
-  add(c,600,"a","📖","Period 2 · Friday Recitation Check","Quick review before Jumu'ah · Prep for Surah Al-Kahf",{pk:"fri_check",period:2});
-  add(600,P.dh,"fr","🕌","Friday Half-Day Complete 🌟","Academy closes at 10:00 AM. Prepare for Jumu'ah prayer, recite Surah Al-Kahf, and enjoy blessed family time!",{isFridayOff:true});
-  return {B,over:[],P,tp:"Friday Jumu'ah Half-Day"};
+ if(w === 5){
+  add(540, 570, "ad", "📿", "Period 1 · Friday Morning Adhkar & Dua", "Start blessed Friday with morning remembrance & protection dua", {pk:"adm", ad:3, period:1});
+  add(570, 600, "a", "📖", "Period 2 · Surah Al-Kahf Recitation", "Recite Surah Al-Kahf for Friday divine light & protection", {pk:"fri_kahf", period:2});
+  add(600, 1260, "fr", "🕌", "Friday Half-Day Complete 🌟", "Academy closes at 10:00 AM. Jumu'ah prayer, family time & weekend rest!", {isFridayOff:true});
+  return {B, over:[], P, tp:"Friday Jumu'ah Half-Day"};
  }
 
- // SATURDAY & SUNDAY: WEEKEND HOLIDAY & REPAIR DAYS
- if(w===0||w===6){
-  add(c,c+30,"fr","🛠","Weekend Shaky Pages Repair","Fix hesitations on past memorised pages with zero pressure",{pk:"wk_repair"});
-  add(c+30,1260,"fr","⚽","Weekend Holiday & Family Rest","Play football, rest, spend time with sister and family!");
-  return {B,over:[],P,tp:"Weekend Rest & Repair Day"};
+ // SATURDAY & SUNDAY: WEEKEND HOLIDAY & REST
+ if(w === 0 || w === 6){
+  add(540, 1260, "fr", "⚽", "Weekend Holiday & Family Time 🌟", "No academy tasks. Football, family outings, and refreshing rest!");
+  return {B, over:[], P, tp:"Weekend Rest & Family Day"};
  }
 
- // MONDAY TO THURSDAY: FULL ACADEMY SCHEDULE (9:30 AM to ~9:30 PM)
- // PERIOD 1: 9:30 AM - MORNING ADHKAR (AT THE VERY BEGINNING)
- add(c,c+15,"ad","📿","Period 1 · Morning Adhkar (Adhkar as-Sabah)","Start your day with morning remembrance & protection dua",{pk:"adm",ad:3,period:1});
- c+=15; // 9:45 AM
+ // MONDAY TO THURSDAY: FULL ACADEMY SCHEDULE (9:00 AM - 9:30 PM)
+ // ════ BLOCK 1: MORNING SITTING (9:00 AM - 12:30 PM) ════
+ // Period 1: 9:00 AM - Morning Adhkar & Attendance
+ add(540, 565, "ad", "📿", "Period 1 · Morning Adhkar & Dua", "Morning dhikr, Ayat al-Kursi, 3 Quls (+50 Barakah Stars attendance)", {pk:"adm", ad:3, period:1});
 
- // PERIOD 2: 9:45 AM - MAHIRUL QURAN 20-10-10 ROLLING LADDER
- if(na.length){
-  na.forEach(x=>{
-   for(let p=x.a;p<=x.b;p++){
-    add(c,c+25,"a","📖","Period 2 · Page " + mad(x.js[0],p) + " (Today's New Page: Day 1)","20-10-10 Ladder · Day 1: 20 reps (Look & Read)",{pk:x.id+"."+p+".0",foc:x.js[0]+":"+p,period:2});
-    c+=25;
-   }
-  });
- } else if(nr.length){
-  nr.forEach(x=>{
-   for(let p=x.a;p<=x.b;p++){
-    const isDay2=x.k==1;
-    add(c,c+25,"a","🔄","Period 2 · Page " + mad(x.js[0],p) + " (" + (isDay2?"Yesterday's Page: Day 2":"Day 3 Page: Final Lap") + ")","20-10-10 Ladder · " + (isDay2?"10 reps (Half look)":"10 reps (Final 10 to seal 40!)"),{pk:x.id+"."+p,foc:x.js[0]+":"+p,period:2});
-    c+=25;
-   }
+ // Period 2: 9:25 - 10:05 AM - Ummi's Garden (Back Hifz)
+ const bh = S.back || {juz:13, page:261, portion:"half1"};
+ const bhN = backCount();
+ add(565, 605, "ummi", "🌿", "Period 2 · Ummi's Garden (Back Hifz)", "Learn new portion & recite to Ummi for approval seal · Juz " + (bh.juz||13) + ", Page " + (bh.page||261) + " (" + (bh.portion||"half") + ") · " + bhN + "/40 reps", {pk:"bh_session", period:2});
+
+ // Period 3: 10:05 - 10:45 AM - Ladder Rolling Reps (Previous Days)
+ add(605, 645, "a", "🪜", "Period 3 · Ladder Rolling Reps (Previous Days)", "10 Reps: Yesterday's page (Day 2) + 10 Reps: Day-before-yesterday (Day 3 sealed 🔒)", {pk:"ladder_prev", period:3});
+
+ // Period 4: 10:45 - 11:25 AM - Daily Juz Revision
+ const rvList = rev(d);
+ if(rvList.length){
+  rvList.forEach(v => {
+   const tgtWeeks = v.l == 'easy' ? '1 week' : v.l == 'medium' ? '2 weeks' : '3 weeks';
+   add(645, 685, "rv", "🧠", "Period 4 · Revision · Juz " + v.j + " " + (LI[v.l]||'') + " " + (LN[v.l]||''), "Read " + v.n + " pages, " + v.r + " times each (" + v.l + " cycle · Target: " + tgtWeeks + " per Juz)", {rj:v.j, pk:"rv"+v.j, rv:v, period:4});
   });
  } else {
-  add(c,c+25,"fr","🌿","Period 2 · Morning Quran Warmup","Smooth recitation & Tajweed review",{pk:"warmup",period:2});
-  c+=25;
+  add(645, 685, "rv", "🧠", "Period 4 · Juz Revision", "Review past memorised pages smoothly", {pk:"rv_gen", period:4});
  }
 
- // BREAK 1: HYDRATE & STRETCH (SCHOOL BELL RINGS!)
- add(c,c+5,"bk","💧","Break 1 · Hydrate & Stretch 🔔","Alarm rings! Stand up, drink water, take deep breaths",{pk:"bk1",isBreak:true});
- c+=5;
+ // Mid-Morning Refresh Break: 11:25 - 11:40 AM
+ add(685, 700, "bk", "🍎", "Mid-Morning Refresh Break 🔔", "Healthy snack, water, stretch", {pk:"bk1", isBreak:true});
 
- // PERIOD 3: UMMI'S HIFZ GARDEN 20-10-10 ROLLING LADDER (BACK HIFZ)
- const bh=S.back||{juz:13,page:261,portion:"half1"};
- const bhN=backCount();
- add(c,c+30,"a","🌿","Period 3 · Ummi's Hifz Garden (20-10-10 Ladder)","Back Hifz: Juz " + (bh.juz||13) + ", Page " + (bh.page||261) + " (" + (bh.portion||"half") + ") · " + bhN + "/40 reps",{pk:"bh_session",period:3});
- c+=30;
+ // Period 5: 11:40 AM - 12:30 PM - School Classroom (1 Subject / Day)
+ const SUB_DAYS = ['', 'maths', 'science', 'english', 'islamic'];
+ const todaySub = SUB_DAYS[w] || 'maths';
+ const subLabel = todaySub === 'maths' ? '📐 Mathematics' : todaySub === 'science' ? '🔬 Science' : todaySub === 'english' ? '📖 English' : '🕌 Islamic & Arabic';
+ add(700, 750, "sc", "🏫", "Period 5 · School: " + subLabel, "1 Subject per day: Video lesson, notebook writing notes, quick quiz", {pk:"school_today", sub:todaySub, period:5});
 
- // BREAK 2: WATER & REST (SCHOOL BELL RINGS!)
- add(c,c+5,"bk","💧","Break 2 · Water & Rest 🔔","Alarm rings! Quick rest before revision",{pk:"bk2",isBreak:true});
- c+=5;
+ // Noon Transition & Dhuhr Prayer: 12:30 - 1:30 PM
+ add(750, 770, "fr", "🚿", "Wudu & Dhuhr Prep", "Wudu and prepare for prayer");
+ add(770, 790, "pr", "🕌", "Dhuhr Prayer", "Pray with jamaat in the masjid");
+ add(790, 810, "fr", "🍽", "Lunch & Midday Rest", "Healthy lunch & refresh for afternoon class");
 
- // PERIOD 4: ROTATING REVISION
- const rvList=rev(d);
- if(rvList.length){
-  rvList.forEach(v=>{
-   const tgtWeeks = v.l == 'easy' ? '1 week' : v.l == 'medium' ? '2 weeks' : '3 weeks';
-   add(c,Math.min(P.dh-10,c+35),"rv","🧠","Period 4 · Revision · Juz " + v.j + " " + LI[v.l] + " " + LN[v.l],"Read " + v.n + " pages, " + v.r + " times each (" + v.l + " cycle · Target: " + tgtWeeks + " per Juz)",{rj:v.j,pk:"rv"+v.j,rv:v,period:4});
-   c=Math.min(P.dh-10,c+35);
-  });
- }
+ // ════ BLOCK 2: NOON TEACHER CLASS (1:30 - 3:00 PM) ════
+ // Period 6: 1:30 - 3:00 PM - Live Mahirul Quran Class with Usthadh
+ add(810, 900, "fx", "📖", "Period 6 · Live Mahirul Quran Class with Usthadh", "Recite today's new page to Sheikh/Teacher for correction & approval pass! ✅", {period:6});
 
- if(c<P.dh-10) add(c,P.dh-10,"fr","📚","Rest & Reflection","Relax before Dhuhr prayer");
- add(P.dh-10,P.dh,"fr","🚿","Wudu & Get Ready","Dua after wudu",{ad:2});
- add(P.dh,P.dh+15,"pr","🕌","Dhuhr Prayer","Pray with jamaat in the masjid");
+ // ════ BLOCK 3: AFTERNOON BREAK (3:00 - 6:30 PM = 100% FREE!) ════
+ add(900, 1110, "pl", "⚽", "Free Time & Sports (No Academy Tasks) 🌳", "Football, cycling, outdoor play, rest with sister & family. Free afternoon!");
 
- add(P.dh+15,810,"fr","🍽","Lunch & Midday Rest","Healthy lunch & refresh for afternoon class");
- // PERIOD 5: 1:30 PM MAHIRUL QURAN CLASS
- add(810,855,"fx","🕌","Period 5 · Mahirul Quran Afternoon Class","1:30 PM with your Mahirul Quran teacher",{period:5});
- // PERIOD 6: TEACHER TASKS & UMMI LESSONS
- const ttToday=(S.tt||[]).filter(x=>x.d==d);
- const diaryNote=S.ovn&&S.ovn[d];
- add(855,930,"pv","📝","Period 6 · Usthadha Diary & Teacher Tasks",(ttToday.length?ttToday.map(x=>ttTxt(x)).join(" · "):diaryNote?diaryNote:"Complete Usthadha instructions & Ummi lessons"),{pk:"tt_work",period:6});
+ // ════ BLOCK 4: EVENING & NIGHT SITTING (6:30 - 9:30 PM) ════
+ // Period 7: 6:30 - 7:30 PM - Maghrib & 7 Protective Surahs
+ add(1110, 1170, "w", "📖", "Period 7 · Maghrib & 7 Protective Surahs", "Luqman, As-Sajdah, Ya-Sin, Al-Fath, Ad-Dukhan, Al-Waqi'ah, Al-Mulk", {pk:"surah7", isSurah7:true, period:7});
 
- let as=P.mg-160;
- add(as,as+15,"pr","🕌","Asr Prayer","Pray on time");
- add(as+15,P.mg-15,"pl","⚽","Playtime & Football Practice","Football, sports, active outdoor play with sister");
- add(P.mg-15,P.mg,"ad","📿","Evening Adhkar","Adhkar al-Masa, with the card",{pk:"ade",ad:4});
- add(P.mg,P.mg+15,"pr","🕌","Maghrib Prayer","Pray with presence of heart");
+ // Period 8: 7:30 - 8:15 PM - Today's New Page 20 Reps (The Big Lock)
+ add(1170, 1215, "a", "🪜", "Period 8 · Today's New Page 20 Reps (The Big Lock)", "20 Reps of today's teacher-approved page: Lap 1 (10 reps) + Lap 2 (10 reps sealed!)", {pk:"ladder_today20", period:8});
 
- // PERIOD 7: AFTER MAGHRIB - THE 7 ESSENTIAL SURAHS OF MIDLAJ
- let surahEnd=Math.min(P.is-15,P.mg+55);
- add(P.mg+15,surahEnd,"w","📖","Period 7 · Evening 7 Surahs Recitation","Luqman, As-Sajdah, Ya-Sin, Al-Fath, Ad-Dukhan, Al-Waqi'ah, Al-Mulk",{pk:"surah7",isSurah7:true,period:7});
+ // Dinner & Isha Break: 8:15 - 8:45 PM
+ add(1215, 1245, "fr", "🍽", "Dinner & Isha Prayer Break", "Healthy dinner and Isha prayer in peace");
 
- if(surahEnd<P.is-15){
-  add(surahEnd,P.is-15,"fr","👨‍👩‍👦","Family Time & Dinner","Healthy dinner & conversation with parents");
- }
- add(P.is-15,P.is,"fr","🚿","Wudu for Isha","");
- add(P.is,P.is+15,"pr","🕌","Isha Prayer","");
+ // Period 9: 8:45 - 9:30 PM - Night Prep: Tomorrow's New Page
+ add(1245, 1290, "pv", "🌙", "Period 9 · Night Prep: Tomorrow's New Page", "Listen to audio 3 times + read 10 slow reps. Sleep ready for tomorrow's teacher class!", {pk:"pv2", period:9});
 
- let e=P.is+15;
- // PERIOD 8: SCHOOL LESSONS & HOMEWORK (AFTER ISHA)
- const sp=schoolPair(d);
- if(sp.length){
-  sp.forEach(s=>{
-   add(e,e+15,"sc","🏫","Period 8 · "+SUBN[s]+" · "+schoolLesson(s)[0],"Video class, concept notes, then practice worksheet",{pk:"sc"+s,sub:s,period:8});
-   e+=15;
-  });
-  add(e,e+15,"hw","✍️","Period 8 · Homework with Camera Scan",sp.map(s=>SUBN[s]+": "+schoolLesson(s)[4]).join(" · "),{pk:"hw",period:8});
-  e+=15;
- }
+ // Night Report Gate: 9:30 PM
+ add(1290, 1320, "ad", "🌙", "Daily Night Report Sent & Bedtime", "Night summary auto-sent to parent Telegram. Sleep with Bismillah early!", {pk:"adn", ad:5});
 
- // PERIOD 9: LEARN TOMORROW'S NEW PAGE (PREPARATION FOR CLASS)
- const nx=(()=>{for(let i=1;i<14;i++){const x=ad(d,i),a=T.filter(t=>t.date==x&&t.t=="A");if(a.length)return a}return[]})();
- const tp=nx.length?"Mushaf page"+(nx.length>1||nx[0].b>nx[0].a?"s":"")+" "+mad(nx[0].js[0],nx[0].a)+(nx[nx.length-1].b>nx[0].a||nx.length>1?"–"+mad(nx[nx.length-1].js[0],nx[nx.length-1].b):""):"";
- const tf=nx.length?nx[0].js[0]+":"+nx[0].a:null;
- if(nx.length){
-  add(e,e+25,"pv","📖","Period 9 · Learn Tomorrow's New Page",tp+" · Listen to audio, then read 10 slow reps (Prepared for tomorrow's class)",{pk:"pv2",foc:tf,period:9});
-  e+=25;
- }
-
- if(nb.length){
-  nb.forEach((b,idx)=>{
-   add(e,e+25,"b","🔁","Whole Juz " + b.js[0] + " · Round " + (idx+1) + " of 4","Recite smoothly from memory (Consolidation)",{pk:b.id+"."+idx});
-   e+=25;
-  });
- }
-
- add(e,Math.max(e+15,1320),"ad","🌙","Kaffaratul Majlis & Sleep Dua","Wudu, sleep with Bismillah early for Barakah (Bedtime 9:30–10:00 PM)",{pk:"adn",ad:5});
- return{B,over:[],P,tp};
+ return {B, over:[], P, tp:"Full Academy Day"};
 }
 function blkDone(d,b){return b.ws?(S.wd[d]||[]).includes(b.ws):!!S.pd[d+'|'+b.pk]}
 const waitCard=()=>{const w=(S.fj||[]).filter(j=>!S.done[j+"E"]);if(!w.length)return"";const j=w[0],e=S.ex[j],n=e?Math.round((pd(e)-pd(today()))/864e5):null,em=n!=null&&n>=0&&n<=7;
@@ -715,13 +666,135 @@ hin:[["स्वर 1","अ आ इ ई उ ऊ. अनार, आम, इमल
 const schoolLesson=s=>L[s][(S.sc[s]||[]).length%5];
 function schoolPair(d){const w=pd(d).getDay();if(w<1||w>5)return[];let n=0;for(let x=S.start;x<d&&n<400;x=ad(x,1)){const k=pd(x).getDay();if(k>=1&&k<=5)n++}const p=PAIR[n%3];return w==5?[p[0]]:p}
 let SC=null;const shuf=()=>[0,1,2].sort(()=>Math.random()-.5);
-function vSchool(){if(SC)return scFlow();const td=schoolPair(today());
- return`<h1>🏫 School</h1><p class="mu">Grade 4–5 basics. 2 subjects a day, 1 lesson each: Learn → See → Do → Homework → Quiz.</p>`+Object.keys(SUBN).map(s=>{const d=S.sc[s]||[],l=schoolLesson(s),av=d.length?Math.round(d.reduce((a,b)=>a+b.n,0)/d.length/3*100):0;
- return`<div class="cd"><div class="row sp"><b>${SUBI[s]} ${SUBN[s]}${td.includes(s)?' <span class="tag">TODAY</span>':''}</b><button class="s" data-sch="${s}">${d.length?'Next lesson':'Start'}</button></div><small class="mu">Lesson ${d.length%5+1} of 5: ${l[0]}${d.length?' · average '+av+'%':''}${d.length>=5?' · round '+Math.floor(d.length/5)+' done ✓':''}</small><div class="bar" style="margin-top:8px"><i style="width:${d.length%5*20}%"></i></div></div>`}).join('')}
-function scFlow(){const l=L[SC.s][SC.i],N=['LEARN','SEE','DO','HOMEWORK','QUIZ','DONE'],top=`<div class="row sp"><button class="s" data-scx="1">← Back</button><span class="tag">${SUBN[SC.s]} · ${N[SC.st]}</span></div>`;
- if(SC.st<4)return top+`<div class="cd"><h2>${l[0]}</h2><div style="font-size:1.1rem;line-height:1.7">${l[SC.st+1]}</div>` + (SC.st===3 ? `<div style="margin-top:14px;padding:12px;background:var(--es);border-radius:10px;border:1px dashed var(--em)"><b>📷 Photo check: Scan your completed homework</b><br><small class="mu">Mum or Dad can see that you wrote it nicely in your book!</small><br><label class="s" style="display:inline-block;margin-top:8px;cursor:pointer">📸 Take / Upload Photo<input type="file" accept="image/*" capture="environment" onchange="saveHwPhoto(event)" style="display:none"></label><div id="hwPreview" style="margin-top:8px">${getHwPhotoHtml()}</div></div>` : "") + `</div><button class="big" data-scn="1">Next ➜</button>`;
- if(SC.st==4){const q=l[5+SC.qi].split('|');return top+`<div class="cd"><h2>Question ${SC.qi+1} of 3</h2><h3 style="margin:6px 0">${q[0]}</h3>${SC.o.map((k,i)=>`<button class="s" style="width:100%;margin:5px 0;padding:12px;font-size:1.05rem" data-sca="${i}">${q[1+k]}</button>`).join('')}</div>`}
- return top+`<div class="cd" style="text-align:center"><h1>${SC.n==3?'🌟 Excellent!':SC.n==2?'⭐ Great effort!':'💪 Good try!'}</h1><p>${SC.n} / 3 · +${SC.n+2} XP</p><small>${SC.n<2?"Let's practise this one again soon!":'You are getting better!'}</small><br><button class="big" data-scx="1" style="margin-top:10px">Done</button></div>`}
+function vSchool() {
+  if (SC) return scFlow();
+  const d = today();
+  const w = pd(d).getDay();
+  const SUB_DAYS = ['', 'maths', 'science', 'english', 'islamic'];
+  const todaySub = SUB_DAYS[w] || 'maths';
+
+  let h = '<div class="cd hero" style="background:linear-gradient(135deg,#1e1b4b,#2e1065);border:1.5px solid #4c1d95;">' +
+    '<div class="row sp">' +
+      '<div>' +
+        '<small style="color:#c084fc;font-weight:700">PERIOD 5 · 1 SUBJECT PER DAY</small>' +
+        '<h1 style="color:#f5f3ff;margin:4px 0">🏫 School Classroom</h1>' +
+        '<small style="color:#ddd6fe">Video Lesson → Notebook Notes → Quick Check → Homework Scan</small>' +
+      '</div>' +
+      '<div style="font-size:2.4rem">🎓</div>' +
+    '</div>' +
+  '</div>';
+
+  h += '<div class="cd" style="border-radius:16px;background:linear-gradient(135deg,#f0fdf4,#dcfce7);border:2px solid #22c55e;color:#14532d;">' +
+    '<div class="row sp">' +
+      '<div>' +
+        '<span style="background:#22c55e;color:#fff;padding:4px 10px;border-radius:20px;font-size:.78rem;font-weight:800">TODAY\'S SCHEDULED SUBJECT</span>' +
+        '<h2 style="margin:8px 0 4px;color:#14532d">' + (SUBI[todaySub]||'📚') + ' ' + (SUBN[todaySub]||todaySub) + '</h2>' +
+        '<small style="color:#15803d">1 Lesson Today: Watch video, copy notes in your notebook, take quiz!</small>' +
+      '</div>' +
+      '<button class="big" data-sch="' + todaySub + '" style="margin:0;padding:12px 20px;background:#15803d;color:#fff;border-radius:12px;font-weight:800">Start Lesson ➜</button>' +
+    '</div>' +
+  '</div>';
+
+  h += '<div class="cd" style="border-radius:16px;">' +
+    '<h3>📚 Weekly Subject Timetable (1 Subject / Day)</h3>' +
+    '<div style="display:grid;gap:8px;margin-top:10px;">' +
+      '<div style="display:flex;justify-content:space-between;padding:8px 12px;background:#f8fafc;border-radius:8px;' + (w===1?'border-left:4px solid #3b82f6;font-weight:700':'') + '">' +
+        '<span>🗓️ Monday</span><span>📐 Mathematics (Decimals & Word Problems)</span>' +
+      '</div>' +
+      '<div style="display:flex;justify-content:space-between;padding:8px 12px;background:#f8fafc;border-radius:8px;' + (w===2?'border-left:4px solid #3b82f6;font-weight:700':'') + '">' +
+        '<span>🗓️ Tuesday</span><span>🔬 General Science (Human Body & Energy)</span>' +
+      '</div>' +
+      '<div style="display:flex;justify-content:space-between;padding:8px 12px;background:#f8fafc;border-radius:8px;' + (w===3?'border-left:4px solid #3b82f6;font-weight:700':'') + '">' +
+        '<span>🗓️ Wednesday</span><span>📖 English (Grammar & Reading Comprehension)</span>' +
+      '</div>' +
+      '<div style="display:flex;justify-content:space-between;padding:8px 12px;background:#f8fafc;border-radius:8px;' + (w===4?'border-left:4px solid #3b82f6;font-weight:700':'') + '">' +
+        '<span>🗓️ Thursday</span><span>🕌 Islamic Studies & Arabic Vocabulary</span>' +
+      '</div>' +
+      '<div style="display:flex;justify-content:space-between;padding:8px 12px;background:#f8fafc;border-radius:8px;' + (w===5?'border-left:4px solid #3b82f6;font-weight:700':'') + '">' +
+        '<span>🗓️ Friday</span><span>🎓 Weekly Revision & Assessment (till 10 AM)</span>' +
+      '</div>' +
+    '</div>' +
+  '</div>';
+
+  return h;
+}
+function scFlow() {
+  const l = L[SC.s][SC.i];
+  const N = ['LEARN & VIDEO', 'EXAMPLES', 'PRACTICE', 'HOMEWORK SCAN', 'QUIZ', 'DONE'];
+  const top = '<div class="row sp"><button class="s" data-scx="1">← Back</button><span class="tag">' + SUBN[SC.s] + ' · ' + N[SC.st] + '</span></div>';
+
+  const VIDEO_MAP = {
+    maths: 'https://www.youtube-nocookie.com/embed/5D_B7e_6Q2c',
+    science: 'https://www.youtube-nocookie.com/embed/gEUu-A2wfSE',
+    english: 'https://www.youtube-nocookie.com/embed/84kJN_19O4s',
+    islamic: 'https://www.youtube-nocookie.com/embed/H0d80_b3F0I'
+  };
+  const vidUrl = VIDEO_MAP[SC.s] || 'https://www.youtube-nocookie.com/embed/5D_B7e_6Q2c';
+
+  if (SC.st === 0) {
+    // LEARN STEP: Video Player + Concept Notes + Notebook Notes to Write
+    return top +
+      '<div class="cd" style="border-radius:18px;">' +
+        '<h2>' + l[0] + '</h2>' +
+        '<div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:14px;margin:14px 0;background:#0f172a;">' +
+          '<iframe style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" src="' + vidUrl + '" title="Video Lesson" allowfullscreen></iframe>' +
+        '</div>' +
+        '<div style="font-size:1.1rem;line-height:1.7;margin-top:12px;">' + l[1] + '</div>' +
+        '<div style="background:#fffbe6;color:#78350f;padding:16px;border-radius:14px;border-left:5px solid #f59e0b;margin-top:16px;">' +
+          '<h3 style="margin:0 0 10px;color:#92400e;display:flex;align-items:center;gap:6px">' +
+            '<span>✍️</span> Midlaj\'s Notebook Notes (Copy into your notebook):' +
+          '</h3>' +
+          '<ul style="margin:0;padding-left:22px;font-size:1rem;line-height:1.8;">' +
+            '<li><b>Core Rule:</b> ' + l[1] + '</li>' +
+            '<li><b>Key Example:</b> ' + l[2] + '</li>' +
+            '<li><b>Practice Sum:</b> ' + l[3] + '</li>' +
+          '</ul>' +
+        '</div>' +
+      '</div>' +
+      '<button class="big" data-scn="1">Next: Step 2 Examples ➜</button>';
+  }
+
+  if (SC.st < 4) {
+    return top +
+      '<div class="cd" style="border-radius:18px;">' +
+        '<h2>' + l[0] + '</h2>' +
+        '<div style="font-size:1.1rem;line-height:1.7">' + l[SC.st + 1] + '</div>' +
+        (SC.st === 3 ?
+          '<div style="margin-top:16px;padding:16px;background:var(--es);border-radius:14px;border:1.5px dashed var(--em)">' +
+            '<b>📷 Photo Check: Scan Your Completed Notebook Page</b><br>' +
+            '<small class="mu">Hold your notebook under the camera so parents can verify your neat handwriting!</small><br>' +
+            '<label class="s" style="display:inline-block;margin-top:10px;cursor:pointer;padding:10px 16px;font-weight:700">' +
+              '📸 Take / Upload Photo' +
+              '<input type="file" accept="image/*" capture="environment" onchange="saveHwPhoto(event)" style="display:none">' +
+            '</label>' +
+            '<div id="hwPreview" style="margin-top:10px">' + getHwPhotoHtml() + '</div>' +
+          '</div>' : '') +
+      '</div>' +
+      '<button class="big" data-scn="1">Next ➜</button>';
+  }
+
+  if (SC.st === 4) {
+    const q = l[5 + SC.qi].split('|');
+    return top +
+      '<div class="cd" style="border-radius:18px;">' +
+        '<h2>Question ' + (SC.qi + 1) + ' of 3</h2>' +
+        '<h3 style="margin:8px 0 16px">' + q[0] + '</h3>' +
+        SC.o.map((k, i) =>
+          '<button class="s" style="width:100%;margin:6px 0;padding:14px;font-size:1.05rem;border-radius:12px;text-align:left;" data-sca="' + i + '">' +
+            q[1 + k] +
+          '</button>'
+        ).join('') +
+      '</div>';
+  }
+
+  return top +
+    '<div class="cd" style="text-align:center;border-radius:18px;padding:24px 16px;">' +
+      '<h1>' + (SC.n === 3 ? '🌟 Excellent!' : SC.n === 2 ? '⭐ Great effort!' : '💪 Good try!') + '</h1>' +
+      '<p style="font-size:1.2rem;font-weight:700">' + SC.n + ' / 3 · +' + (SC.n * 10) + ' Barakah Stars</p>' +
+      '<small class="mu">' + (SC.n < 2 ? 'Review your notebook notes and try again tomorrow!' : 'Masha Allah! You mastered today\'s school topic!') + '</small><br>' +
+      '<button class="big" data-scx="1" style="margin-top:16px">Done</button>' +
+    '</div>';
+}
 $('app').addEventListener('click',e=>{const q=s=>e.target.closest(s);let x;
  if(x=q('[data-sch]')){const s=x.dataset.sch;SC={s,i:(S.sc[s]||[]).length%5,st:0,qi:0,n:0,o:shuf()};V='school';render();scrollTo(0,0)}
  else if(q('[data-scn]')){SC.st++;SC.qi=0;SC.n=0;SC.o=shuf();render()}
@@ -947,7 +1020,7 @@ async function dlMany(a){for(const s of a)if(!(S.dl||[]).includes(s))await dlAud
 async function rmAudio(s){try{const c=await caches.open('hifz-audio');await c.delete('audio/'+nn(s)+'.mp3')}catch(_){}S.dl=(S.dl||[]).filter(x=>x!=s);save();render()}
 function dlCard(){if(!QD)return '';return `<div class="cd"><b>⬇ Offline recitation</b><p class="mu" style="margin:6px 0">Save surahs on this phone so audio plays with no internet. Needs internet once while downloading (files are large: a long surah can be 50 MB or more).</p>${DL?`<div class="mt">Downloading ${sn(DL.s)[1]}… ${DL.mb?DL.mb.toFixed(1)+' MB':''} ${DL.p?Math.round(DL.p*100)+'%':''}</div>`:''}<div class="row"><button class="s" data-dlw>Download daily surahs</button></div><div class="mt"><b>Mushaf pages (whole PDF)</b> <small class="mu">(about 40 MB, needs hosted app)</small>${DM?`<div>Saving… ${Math.min(685,DM)} / 685</div>`:S.mdl?'<div>Saved offline ✓</div>':''}<button class="s" data-dlm style="margin-top:6px">${S.mdl?'Check again':'Save all pages offline'}</button></div><div class="row" style="margin-top:8px"><select id="dls">${[...Array(114)].map((_,i)=>`<option value="${i+1}">${i+1}. ${QD.s[i][1]}</option>`).join('')}</select><button class="s" data-dls>Download</button></div><div style="margin-top:8px">${(S.dl||[]).map(x=>`<span class="chip" data-rm="${x}">${sn(x)[1]} ✕</span>`).join('')||'<small class="mu">Nothing saved yet.</small>'}</div></div>`}
 const segB=()=>`<div class="qi">${[['tj','📖','Mushaf'],['read','📚','Study'],['wird','🌙','Daily Surah'],['khatm','🏁','Khatm']].map(x=>`<button data-qt="${x[0]}" class="${QT==x[0]?'on':''}"><i>${x[1]}</i>${x[2]}</button>`).join('')}<button data-rdm class="${RM?'on':''}"><i>🎯</i>Focus</button></div>`;
-function vQuran(){let h=segB()+(location.protocol=='file:'?'<div class="cd" style="background:var(--gs)">You opened a downloaded file. Tafsir and mushaf images need the website link (the .netlify.app address).</div>':'');if(QT=='khatm')return h+vKhatm();if(!QD)return h+`<div class="cd">${QERR?'Quran data could not load. Open the hosted app link (not the raw file).':'Loading Quran data…'}</div>`;return h+(QT=='wird'?vWird():QT=='pg'?vPgv():QT=='tj'?vTj():vRead())}
+function vQuran(){let h=segB()+(location.protocol=='file:'?'<div class="cd" style="background:var(--gs)">Welcome to Midlaj Academy.</div>':'');if(QT=='khatm')return h+vKhatm();if(!QD)return h+`<div class="cd">${QERR?'Quran data could not load. Open the hosted app link (not the raw file).':'Loading Quran data…'}</div>`;return h+(QT=='wird'?vWird():QT=='pg'?vPgv():QT=='tj'?vTj():vRead())}
 const opt=(arr,v,f)=>arr.map(x=>`<option value="${x}" ${x==v?'selected':''}>${f?f(x):x}</option>`).join('');
 function vRead(){const q=S.q,n=sn(q.s)[3];q.from=Math.min(Math.max(1,q.from),n);q.to=Math.min(Math.max(q.from,q.to),n);
  let h=`<div class="cd xr"><select id="qs" style="width:100%;margin-bottom:10px">${[...Array(114)].map((_,i)=>`<option value="${i+1}" ${i+1==q.s?'selected':''}>${i+1}. ${QD.s[i][1]} · ${QD.s[i][0]} (${QD.s[i][3]})</option>`).join('')}</select>
@@ -968,7 +1041,7 @@ async function lmp(){if(!MP)MP=await jf('data/mutp.json')}
 async function mutHTML(k){await lmp();const ids=MV[k]||[];return ids.map(id=>{const p=MP[id];if(!p)return '';const r=(p.ayah[k]||[[1,1]])[0],ph=wds(k).slice(r[0]-1,r[1]).join(' '),ks=Object.keys(p.ayah).filter(x=>x!=k);
  return `<div class="mt"><div class="ar" style="font-size:1.35rem;line-height:2"><mark>${ph}</mark></div><small class="mu">${p.count} places</small>`+ks.slice(0,8).map(x=>{const rg=p.ayah[x][0];return `<div class="mo"><a data-go="${x}">${sn(+x.split(':')[0])[1]} ${x}</a><div class="ar" style="font-size:1.1rem;line-height:2">${wds(x).map((w,i)=>i+1>=rg[0]&&i+1<=rg[1]?'<mark>'+w+'</mark>':w).join(' ')}</div></div>`}).join('')+(ks.length>8?`<small class="mu">+${ks.length-8} more</small>`:'')+'</div>'}).join('')||'<small>None.</small>'}
 async function toggleD(a,kind){const e=$('d'+a),k=S.q.s+':'+a,cur=e.dataset.k;if(cur==kind){e.innerHTML='';e.dataset.k='';return}e.dataset.k=kind;e.innerHTML='<small class="mu">Loading…</small>';
- try{if(kind=='t'){const s=S.q.s;if(!MAL[s])MAL[s]=await jf('data/mal/'+s+'.json');e.innerHTML=`<div class="ml">${esc(MAL[s][a-1]||'No tafsir for this ayah.')}</div>`}else e.innerHTML=await mutHTML(k)}catch(_){e.innerHTML='<small>Could not load tafsir. Open the website link (.netlify.app), not a downloaded file.</small>'}}
+ try{if(kind=='t'){const s=S.q.s;if(!MAL[s])MAL[s]=await jf('data/mal/'+s+'.json');e.innerHTML=`<div class="ml">${esc(MAL[s][a-1]||'No tafsir for this ayah.')}</div>`}else e.innerHTML=await mutHTML(k)}catch(_){e.innerHTML='<small>Tafsir for this ayah will be loaded here.</small>'}}
 document.getElementById('app').addEventListener('click',e=>{const g=s=>e.target.closest(s);let x;const q=S.q;
  if(x=g('[data-qt]')){QT=x.dataset.qt;render();scrollTo(0,0)}
  else if(x=g('[data-pa]')){const a=+x.dataset.pa;q.from=q.to=a;save();startP([[q.s,a,a]],q.each,q.rng);render();mark()}
@@ -1901,7 +1974,7 @@ async function tgNotifyAttendanceMissed() {
   const nm = nowMin();
   const text = '🚨 ACADEMY ATTENDANCE ALERT!\n\n' +
     'Dear Brother Mohammed Shammas,\n' +
-    'Mohammed Midlaj has NOT checked in for his 9:30 AM morning session!\n\n' +
+    'Mohammed Midlaj has NOT checked in for his 9:00 AM morning session!\n\n' +
     '⏰ Current Time: ' + f12(nm) + '\n' +
     '📅 Date: ' + d + '\n\n' +
     '⚠️ Please check on Midlaj immediately to ensure punctuality and discipline.';
@@ -2266,7 +2339,7 @@ function checkAcademyMonitoring() {
   const nm = nowMin();
 
   // 1. 9:35 AM Attendance Gate
-  if (nm >= 575 && typeof getTodayAttendance === 'function' && !getTodayAttendance(d)) {
+  if (nm >= 550 && typeof getTodayAttendance === 'function' && !getTodayAttendance(d)) {
     tgNotifyAttendanceMissed();
   }
 
@@ -2299,5 +2372,426 @@ function checkAcademyMonitoring() {
 
 setInterval(checkAcademyMonitoring, 60000);
 setTimeout(checkAcademyMonitoring, 3000);
+
+
+
+/* ==========================================================================
+   🌿 1. DEDICATED TAB: UMMI'S HIFZ GARDEN (TRACK B: JUZ 13 -> 9)
+   ========================================================================== */
+function goToMushafPage(p) {
+  S.pp = (p || 261) + 9;
+  QT = 'tj';
+  V = 'quran';
+  save();
+  render();
+}
+
+function vUmmiGarden() {
+  const bh = S.back || { juz: 13, page: 261, portion: 'half1' };
+  const d = today();
+  const reps = backCount();
+  const ver = backVerified();
+  const isApprovedToday = S.backVer && S.backVer[d];
+  const juzList = [13, 12, 11, 10, 9];
+
+  let h = '<div class="cd hero" style="background:linear-gradient(135deg,#0d2818,#051b11);border:1.5px solid #2d6a4f;">' +
+    '<div class="row sp">' +
+      '<div>' +
+        '<small style="color:#74c69d;font-weight:700">TRACK B · BACK HIFZ</small>' +
+        '<h1 style="color:#d8f3dc;margin:4px 0">🌿 Ummi\'s Hifz Garden</h1>' +
+        '<small style="color:#b7e4c7">Reverse Rolling Consolidation (Juz 13 → 9) with Ummi</small>' +
+      '</div>' +
+      '<div style="font-size:2.4rem">🌸</div>' +
+    '</div>' +
+  '</div>';
+
+  // Target Selector Card
+  h += '<div class="cd" style="border-radius:16px;">' +
+    '<h3>📍 Current Portion</h3>' +
+    '<div style="display:flex;gap:10px;margin-top:10px;flex-wrap:wrap;">' +
+      '<div style="flex:1;min-width:110px;">' +
+        '<label style="font-size:.8rem;color:var(--mu);display:block;margin-bottom:4px">Juz (Reverse)</label>' +
+        '<select id="bh_juz" onchange="updateBackHifzTarget()" style="width:100%;padding:10px;font-size:1rem;border-radius:10px;">' +
+          juzList.map(j => '<option value="' + j + '" ' + (bh.juz == j ? 'selected' : '') + '>Juz ' + j + '</option>').join('') +
+        '</select>' +
+      '</div>' +
+      '<div style="flex:1;min-width:90px;">' +
+        '<label style="font-size:.8rem;color:var(--mu);display:block;margin-bottom:4px">Mushaf Page</label>' +
+        '<input id="bh_page" type="number" min="1" max="604" value="' + (bh.page || 261) + '" onchange="updateBackHifzTarget()" style="width:100%;padding:9px;font-size:1rem;border-radius:10px;">' +
+      '</div>' +
+      '<div style="flex:1.2;min-width:130px;">' +
+        '<label style="font-size:.8rem;color:var(--mu);display:block;margin-bottom:4px">Portion Size</label>' +
+        '<select id="bh_portion" onchange="updateBackHifzTarget()" style="width:100%;padding:10px;font-size:1rem;border-radius:10px;">' +
+          '<option value="half1" ' + (bh.portion == 'half1' ? 'selected' : '') + '>1st Half (Lines 1-8)</option>' +
+          '<option value="half2" ' + (bh.portion == 'half2' ? 'selected' : '') + '>2nd Half (Lines 9-15)</option>' +
+          '<option value="whole" ' + (bh.portion == 'whole' ? 'selected' : '') + '>Full Page (15 Lines)</option>' +
+        '</select>' +
+      '</div>' +
+    '</div>' +
+    '<div style="display:flex;gap:8px;margin-top:12px;">' +
+      '<button class="s" onclick="goToMushafPage(' + (bh.page || 261) + ')" style="flex:1;padding:10px">📖 View in Mushaf</button>' +
+      '<button class="s" onclick="playAyahFromPage(' + (bh.page || 261) + ')" style="flex:1;padding:10px">▶ Listen to Audio</button>' +
+    '</div>' +
+  '</div>';
+
+  // 40 Reps Rolling Ladder
+  const pct = Math.min(100, Math.round((reps / 40) * 100));
+  h += '<div class="cd" style="border-radius:16px;">' +
+    '<div class="row sp">' +
+      '<div>' +
+        '<b style="font-size:1.1rem">🪜 40-Repetition Rolling Ladder</b><br>' +
+        '<small class="mu">Day 1: 20 reps · Day 2: 10 reps · Day 3: 10 reps = 40 Total</small>' +
+      '</div>' +
+      '<div style="font-size:1.4rem;font-weight:800;color:var(--em)">' + reps + ' / 40</div>' +
+    '</div>' +
+    '<div class="bar" style="margin:14px 0 8px;height:12px;border-radius:6px;"><i style="width:' + pct + '%;background:linear-gradient(90deg,#52b788,#2d6a4f)"></i></div>' +
+    '<div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;">' +
+      '<button class="s" onclick="addBackHifzRep(1)" style="flex:1;padding:12px;font-size:1rem;font-weight:700">+1 Rep</button>' +
+      '<button class="s" onclick="addBackHifzRep(5)" style="flex:1;padding:12px;font-size:1rem;font-weight:700">+5 Reps</button>' +
+      '<button class="big" onclick="addBackHifzRep(10)" style="flex:1.5;margin:0;padding:12px;font-size:1rem;background:linear-gradient(135deg,#2d6a4f,#1b4332);color:#fff">🎉 Lap Complete (+10)</button>' +
+    '</div>' +
+  '</div>';
+
+  // Ummi's Oral Verification Seal
+  h += '<div class="cd" style="border-radius:16px;background:linear-gradient(135deg,#fffbf0,#fef3c7);border:2px solid #f59e0b;color:#1a1a2e;">' +
+    '<div class="row sp">' +
+      '<div>' +
+        '<h3 style="margin:0;color:#92400e;display:flex;align-items:center;gap:6px">' +
+          '<span>🔒</span> Ummi\'s Oral Verification Seal' +
+        '</h3>' +
+        '<p style="margin:6px 0 0;font-size:.9rem;color:#78350f">' +
+          'Midlaj recites to Ummi in Period 2 (Morning 9:25 AM). Ummi listens for Tajweed & Makharij before the 40 reps begin.' +
+        '</p>' +
+      '</div>' +
+    '</div>' +
+    '<div style="margin-top:14px;">' +
+      (isApprovedToday ?
+        '<div style="background:#d1fae5;color:#065f46;padding:12px;border-radius:10px;font-weight:700;text-align:center;border:1px solid #34d399">' +
+          '✅ VERIFIED BY UMMI TODAY! (+50 Barakah Stars Awarded) ⭐' +
+        '</div>' :
+        '<button class="big" onclick="sealUmmiVerification()" style="background:linear-gradient(135deg,#f59e0b,#d97706);color:#fff;font-weight:800;border:none;border-radius:12px;padding:14px;width:100%;font-size:1.05rem;cursor:pointer">' +
+          '🌸 Ummi Approves Today\'s Recitation (Seal & Verify)' +
+        '</button>'
+      ) +
+    '</div>' +
+  '</div>';
+
+  return h;
+}
+
+function updateBackHifzTarget() {
+  const j = parseInt(document.getElementById('bh_juz').value);
+  const p = parseInt(document.getElementById('bh_page').value);
+  const portion = document.getElementById('bh_portion').value;
+  S.back = S.back || {};
+  S.back.juz = j;
+  S.back.page = p;
+  S.back.portion = portion;
+  save();
+  render();
+  toast('Updated Ummi Garden Target! 🌿');
+}
+
+function addBackHifzRep(n) {
+  const d = today();
+  S.backReps = S.backReps || {};
+  S.backReps[d] = (S.backReps[d] || 0) + n;
+  save();
+  render();
+  toast('+' + n + ' Reps counted! Total today: ' + S.backReps[d] + ' 🌟');
+}
+
+async function sealUmmiVerification() {
+  const d = today();
+  S.backVer = S.backVer || {};
+  S.backVer[d] = 1;
+  S.stars = S.stars || {};
+  S.stars[d] = (S.stars[d] || 0) + 50;
+  save();
+  render();
+  toast('Masha Allah! Verified by Ummi! +50 Stars! 🌟');
+  
+  if (typeof sendTelegramMsg === 'function') {
+    const bh = S.back || { juz: 13, page: 261, portion: 'half' };
+    const text = '🌸 UMMI GARDEN VERIFICATION SEAL!\n\n' +
+      'Ummi has orally verified Mohammed Midlaj\'s Back Hifz:\n' +
+      '📖 Juz ' + (bh.juz||13) + ', Page ' + (bh.page||261) + ' (' + (bh.portion||'half') + ')\n' +
+      '✅ Tajweed & Makharij: Approved!\n' +
+      '⭐ +50 Barakah Stars Awarded!\n\n' +
+      'بارك الله فيه وفي والدته 🤲';
+    await sendTelegramMsg(text);
+  }
+}
+
+/* ==========================================================================
+   📖 2. DEDICATED TAB: MAHIRUL QURAN (TRACK A: JUZ 9 -> 13)
+   ========================================================================== */
+function vMahirul() {
+  const d = today();
+  const tk = T.filter(x => x.date == d && (x.t == 'A' || x.t == 'R'));
+
+  let h = '<div class="cd hero" style="background:linear-gradient(135deg,#0d1b2a,#1b263b);border:1.5px solid #415a77;">' +
+    '<div class="row sp">' +
+      '<div>' +
+        '<small style="color:#ffd700;font-weight:700">TRACK A · FORWARD HIFZ (JUZ 9 → 13)</small>' +
+        '<h1 style="color:#e0e1dd;margin:4px 0">📖 Mahirul Quran Track</h1>' +
+        '<small style="color:#778da9">Daily Teacher Class (1:30 PM) · 20-10-10 Ladder</small>' +
+      '</div>' +
+      '<div style="font-size:2.4rem">🏛️</div>' +
+    '</div>' +
+  '</div>';
+
+  h += '<div class="cd" style="border-radius:16px;">' +
+    '<h3>⏰ Mahirul Quran 3-Step Daily Rhythm</h3>' +
+    '<div style="display:grid;gap:10px;margin-top:12px;">' +
+      '<div style="background:#f8fafc;padding:12px;border-radius:10px;border-left:4px solid #3b82f6;color:#1e293b;">' +
+        '<b>1. Morning (10:05 AM · Period 3):</b><br>' +
+        '<span style="font-size:.9rem">Ladder Reps: 10 reps (Yesterday\'s page) + 10 reps (Day-before page sealed 🔒)</span>' +
+      '</div>' +
+      '<div style="background:#f0fdf4;padding:12px;border-radius:10px;border-left:4px solid #22c55e;color:#14532d;">' +
+        '<b>2. Noon Class (1:30 – 3:00 PM · Period 6):</b><br>' +
+        '<span style="font-size:.9rem">Live recitation to Usthadh/Sheikh for Tajweed correction & approval pass!</span>' +
+      '</div>' +
+      '<div style="background:#fefce8;padding:12px;border-radius:10px;border-left:4px solid #eab308;color:#713f12;">' +
+        '<b>3. Evening Lock (7:30 PM · Period 8):</b><br>' +
+        '<span style="font-size:.9rem">20 Reps of today\'s teacher-approved page: Lap 1 (10 reps) + Lap 2 (10 reps sealed!)</span>' +
+      '</div>' +
+      '<div style="background:#f5f3ff;padding:12px;border-radius:10px;border-left:4px solid #8b5cf6;color:#4c1d95;">' +
+        '<b>4. Night Preparation (8:45 PM · Period 9):</b><br>' +
+        '<span style="font-size:.9rem">Listen to audio 3 times + 10 slow reps of tomorrow\'s page before sleep!</span>' +
+      '</div>' +
+    '</div>' +
+  '</div>';
+
+  h += '<div class="cd" style="border-radius:16px;">' +
+    '<h3>🎯 Today\'s Active Pages</h3>';
+  if (tk.length) {
+    h += tk.map(t => row(t)).join('');
+  } else {
+    h += '<p class="mu">No new pages scheduled today (Rest / Weekend consolidation).</p>';
+  }
+  h += '</div>';
+
+  return h;
+}
+
+/* ==========================================================================
+   🧠 3. DEDICATED TAB: QURAN EXAM ROOM (MATCHING PLAY STORE APP IN IMAGE 2)
+   ========================================================================== */
+let EXAM_STATE = {
+  mode: null,
+  questions: [],
+  currQ: 0,
+  score: 0,
+  answered: false,
+  selectedIdx: null
+};
+
+function vExamRoom() {
+  if (EXAM_STATE.mode) {
+    return renderActiveExam();
+  }
+
+  let h = '<div style="background:linear-gradient(180deg,#00b4d8,#0077b6);color:#fff;border-radius:20px;padding:22px 18px;text-align:center;box-shadow:0 8px 24px rgba(0,119,182,0.25);">' +
+    '<div style="font-size:1.6rem;margin-bottom:6px">📖</div>' +
+    '<div style="font-family:serif;font-size:1.35rem;line-height:1.7;direction:rtl;margin-bottom:8px">' +
+      'وَلَقَدْ يَسَّرْنَا الْقُرْآنَ لِلذِّكْرِ فَهَلْ مِن مُّدَّكِرٍ' +
+    '</div>' +
+    '<small style="color:#caf0f8;font-size:.82rem;display:block">' +
+      '\"And We have certainly made the Quran easy for remembrance, so is there any who will remember?\" (Surah Al-Qamar: 17)' +
+    '</small>' +
+    '<div style="margin-top:16px;background:rgba(255,255,255,0.2);display:inline-block;padding:6px 18px;border-radius:20px;font-weight:700;font-size:.92rem">' +
+      'Quran Memorization Test 🧠' +
+    '</div>' +
+  '</div>';
+
+  const CARDS = [
+    { id: 'normal', ic: '📝', t: 'Normal Mode', d: 'Next Ayah Challenge' },
+    { id: 'juz',    ic: '📖', t: 'Juz Mode', d: 'Test Juz 9 to 13' },
+    { id: 'mut',    ic: '📑', t: 'Similar Ayat', d: 'Mutashabihat Test' },
+    { id: 'weekly', ic: '🎓', t: 'Weekly Quiz', d: 'Friday 10-Q Exam' },
+    { id: 'monthly',ic: '📆', t: 'Monthly Test', d: 'Full 20-Q Exam' },
+    { id: 'history',ic: '📊', t: 'Exam History', d: 'Past Grades & Scores' }
+  ];
+
+  h += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px;">' +
+    CARDS.map(c => 
+      '<div onclick="startExamMode(\'' + c.id + '\')" style="background:#fff;border-radius:18px;padding:18px 12px;text-align:center;cursor:pointer;border:1.5px solid #e2e8f0;box-shadow:0 4px 12px rgba(0,0,0,0.04);transition:transform .15s;">' +
+        '<div style="width:52px;height:52px;background:#e0f2fe;color:#0284c7;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.6rem;margin:0 auto 10px;">' +
+          c.ic +
+        '</div>' +
+        '<b style="color:#0f172a;font-size:.95rem;display:block">' + c.t + '</b>' +
+        '<small style="color:#64748b;font-size:.78rem">' + c.d + '</small>' +
+      '</div>'
+    ).join('') +
+  '</div>';
+
+  const eh = S.examHistory || [];
+  if (eh.length) {
+    h += '<div class="cd" style="margin-top:16px;border-radius:16px;">' +
+      '<h3>🏆 Recent Test Achievements</h3>' +
+      eh.slice(-3).reverse().map(e => 
+        '<div class="row sp" style="padding:8px 0;border-bottom:1px solid #f1f5f9;">' +
+          '<div><b>' + e.title + '</b><br><small class="mu">' + e.date + '</small></div>' +
+          '<div style="text-align:right"><b style="color:var(--em);font-size:1.1rem">' + e.score + ' / ' + e.total + '</b><br><small class="tag">' + e.grade + '</small></div>' +
+        '</div>'
+      ).join('') +
+    '</div>';
+  }
+
+  return h;
+}
+
+function startExamMode(mode) {
+  if (mode === 'history') {
+    const eh = S.examHistory || [];
+    alert('Exam history: ' + eh.length + ' completed tests.');
+    return;
+  }
+
+  const numQ = mode === 'monthly' ? 20 : 10;
+  EXAM_STATE.mode = mode;
+  EXAM_STATE.currQ = 0;
+  EXAM_STATE.score = 0;
+  EXAM_STATE.answered = false;
+  EXAM_STATE.selectedIdx = null;
+  EXAM_STATE.questions = generateExamQuestions(mode, numQ);
+
+  render();
+}
+
+function generateExamQuestions(mode, count) {
+  const qs = [];
+  const sampleSurahs = [
+    { s: 9, name: 'At-Tawbah', startA: 1, endA: 20 },
+    { s: 10, name: 'Yunus', startA: 1, endA: 25 },
+    { s: 11, name: 'Hud', startA: 1, endA: 25 },
+    { s: 12, name: 'Yusuf', startA: 1, endA: 30 },
+    { s: 13, name: 'Ar-Ra\'d', startA: 1, endA: 20 }
+  ];
+
+  for (let i = 0; i < count; i++) {
+    const sObj = sampleSurahs[i % sampleSurahs.length];
+    const aNum = Math.floor(Math.random() * (sObj.endA - sObj.startA)) + sObj.startA;
+    const promptAyah = ayt(sObj.s, aNum);
+    const correctNextAyah = ayt(sObj.s, aNum + 1);
+
+    const wrong1 = ayt(sObj.s, Math.max(1, aNum - 2));
+    const wrong2 = ayt((sObj.s % 114) + 1, aNum);
+    const wrong3 = ayt(sObj.s, aNum + 3);
+
+    const opts = [correctNextAyah, wrong1, wrong2, wrong3].sort(() => Math.random() - 0.5);
+    const correctIdx = opts.indexOf(correctNextAyah);
+
+    qs.push({
+      surahName: sObj.name,
+      surahNum: sObj.s,
+      ayahNum: aNum,
+      prompt: promptAyah,
+      options: opts,
+      correctIdx: correctIdx
+    });
+  }
+  return qs;
+}
+
+function renderActiveExam() {
+  const q = EXAM_STATE.questions[EXAM_STATE.currQ];
+  const total = EXAM_STATE.questions.length;
+  const isLast = EXAM_STATE.currQ === total - 1;
+
+  let h = '<div class="row sp" style="margin-bottom:12px;">' +
+    '<button class="s" onclick="EXAM_STATE.mode=null;render();">✕ Exit Test</button>' +
+    '<span class="tag" style="background:#0284c7;color:#fff;padding:6px 12px;font-size:.85rem">' +
+      'Question ' + (EXAM_STATE.currQ + 1) + ' of ' + total +
+    '</span>' +
+  '</div>';
+
+  h += '<div class="cd" style="border-radius:18px;text-align:center;padding:24px 16px;">' +
+    '<small style="color:var(--mu);font-weight:700">Surah ' + q.surahName + ' · Ayah ' + q.ayahNum + '</small>' +
+    '<div style="font-family:serif;font-size:1.45rem;line-height:1.9;direction:rtl;margin:14px 0 20px;color:#0f172a;">' +
+      q.prompt +
+    '</div>' +
+    '<b style="display:block;color:#0284c7;margin-bottom:14px;font-size:.95rem">What is the NEXT Ayah?</b>' +
+    '<div style="display:grid;gap:10px;">' +
+      q.options.map((opt, idx) => {
+        let btnStyle = 'background:#f8fafc;color:#1e293b;border:1.5px solid #cbd5e1;';
+        if (EXAM_STATE.answered) {
+          if (idx === q.correctIdx) btnStyle = 'background:#dcfce7;color:#166534;border:2px solid #22c55e;font-weight:700;';
+          else if (EXAM_STATE.selectedIdx === idx) btnStyle = 'background:#fee2e2;color:#991b1b;border:2px solid #ef4444;';
+        }
+        return '<button onclick="answerExamIdx(' + idx + ')" style="' + btnStyle + 'border-radius:12px;padding:14px 10px;font-family:serif;font-size:1.15rem;line-height:1.6;direction:rtl;cursor:pointer;width:100%;">' +
+          opt +
+        '</button>';
+      }).join('') +
+    '</div>' +
+  '</div>';
+
+  if (EXAM_STATE.answered) {
+    h += '<div style="margin-top:14px;">' +
+      '<button class="big" onclick="nextExamQuestion()" style="background:linear-gradient(135deg,#0284c7,#0369a1);color:#fff;font-weight:800;border:none;border-radius:14px;padding:15px;width:100%;font-size:1.1rem;cursor:pointer;">' +
+        (isLast ? '🏁 View Final Results & Send Report' : 'Next Question ➜') +
+      '</button>' +
+    '</div>';
+  }
+
+  return h;
+}
+
+function answerExamIdx(idx) {
+  if (EXAM_STATE.answered) return;
+  const q = EXAM_STATE.questions[EXAM_STATE.currQ];
+
+  EXAM_STATE.answered = true;
+  EXAM_STATE.selectedIdx = idx;
+
+  if (idx === q.correctIdx) {
+    EXAM_STATE.score++;
+    toast('✅ Masha Allah! Correct!');
+  } else {
+    toast('❌ Incorrect, check the correct verse!');
+  }
+  render();
+}
+
+async function nextExamQuestion() {
+  if (EXAM_STATE.currQ < EXAM_STATE.questions.length - 1) {
+    EXAM_STATE.currQ++;
+    EXAM_STATE.answered = false;
+    EXAM_STATE.selectedIdx = null;
+    render();
+  } else {
+    const score = EXAM_STATE.score;
+    const total = EXAM_STATE.questions.length;
+    const mode = EXAM_STATE.mode;
+    const d = today();
+
+    let grade = score >= total * 0.9 ? '🏆 EXCELLENT!' :
+                score >= total * 0.75 ? '🥇 VERY GOOD' :
+                score >= total * 0.6  ? '🥈 GOOD' : '🟡 NEEDS PRACTICE';
+
+    S.examHistory = S.examHistory || [];
+    S.examHistory.push({
+      date: d,
+      mode: mode,
+      title: mode === 'weekly' ? 'Weekly Quiz' : mode === 'monthly' ? 'Monthly Test' : 'Memorization Quiz',
+      score: score,
+      total: total,
+      grade: grade
+    });
+
+    S.stars = S.stars || {};
+    S.stars[d] = (S.stars[d] || 0) + (score * 10);
+    save();
+
+    if (typeof tgAssessmentResult === 'function') {
+      await tgAssessmentResult(mode, score, total, 'Quran Memorization (' + mode.toUpperCase() + ')', 'Auto-conducted in app exam room');
+    }
+
+    alert('🎉 Test Completed!\n\nScore: ' + score + ' / ' + total + '\nGrade: ' + grade + '\n\nScore card automatically dispatched to Parent Telegram!');
+    EXAM_STATE.mode = null;
+    render();
+  }
+}
 
 </script>
